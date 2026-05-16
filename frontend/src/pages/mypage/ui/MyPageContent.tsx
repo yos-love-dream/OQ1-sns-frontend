@@ -5,7 +5,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@shared/ui/popover";
-import { createClient } from "@shared/api/supabase/client";
+import { signOut } from "@shared/api/supabase/auth-client";
 import { LogOut, Menu } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -19,8 +19,7 @@ function ProfileMenu() {
 
   const handleLogout = async () => {
     if (!(await confirm("로그아웃 하시겠어요?"))) return;
-    const supabase = createClient();
-    await supabase.auth.signOut();
+    await signOut();
     router.push("/login");
     router.refresh();
   };

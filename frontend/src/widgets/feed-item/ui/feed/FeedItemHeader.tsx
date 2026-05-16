@@ -1,12 +1,11 @@
 "use client";
 
-import { createClient } from "@shared/api/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { Lock, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import type { Post } from "@entities/post";
+import { deletePost, reportPost, type Post } from "@entities/post";
 import { useAlert } from "@app/providers/AlertProvider";
 import { useConfirm } from "@app/providers/ConfirmProvider";
 import { UserAvatar, UserBadges } from "@entities/user";
@@ -33,14 +32,9 @@ export default function FeedItemHeader({
   const handleDelete = async () => {
     if (!(await confirm("이 묵상을 삭제하시겠습니까?"))) return;
 
-    const supabase = createClient();
-    const { error } = await supabase
-      .from("oq_user_qt_answers")
-      .delete()
-      .eq("id", post.id)
-      .eq("user_id", currentUserId!);
-
-    if (error) {
+    try {
+      await deletePost(post.id, currentUserId!);
+    } catch (error) {
       console.error("Delete Error:", error);
       showAlert("삭제에 실패했습니다. 다시 시도해 주세요.");
       return;
@@ -147,12 +141,9 @@ export default function FeedItemHeader({
                     if (!(await confirm("이 게시물을 신고하시겠습니까?")))
                       return;
 
-                    const supabase = createClient();
-                    const { error } = await supabase.rpc("report_answer", {
-                      answer_id: post.id,
-                    });
-
-                    if (error) {
+                    try {
+                      await reportPost(post.id);
+                    } catch (error) {
                       console.error("Report Error:", error);
                       showAlert("신고 처리에 실패했습니다.");
                       return;

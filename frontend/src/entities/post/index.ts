@@ -1,4 +1,5 @@
 export * from "./api/postService";
+export * from "./api/commentService";
 export * from "./lib/useQueries";
 export type { Post, Comment } from "./model/types";
 export { FeedFilter } from "./model/types";

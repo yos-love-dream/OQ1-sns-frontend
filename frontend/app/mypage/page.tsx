@@ -1,6 +1,6 @@
 import { requireAuth } from "@shared/api/supabase/auth";
 import type { Metadata } from "next";
-import { MyPageContent } from "@views/mypage";
+import { MyPageContent } from "@pages/mypage";
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },

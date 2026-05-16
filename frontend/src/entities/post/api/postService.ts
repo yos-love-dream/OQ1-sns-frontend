@@ -1,12 +1,9 @@
 import { createClient } from "@shared/api/supabase/client";
 import { parseDate } from "@shared/lib/utils";
 import type { Post } from "../model/types";
+import { fetchActiveUserIdsToday } from "./activity";
 import { fetchUserStatsMap } from "../lib/fetchUserStatsMap";
-import {
-  getActiveUserIdsToday,
-  mapQtAnswerToPost,
-  mapUserPostToPost,
-} from "../lib/mapToPost";
+import { mapQtAnswerToPost, mapUserPostToPost } from "../lib/mapToPost";
 import type {
   DBReactionRow,
   QtAnswerRow,
@@ -44,7 +41,7 @@ export async function fetchPosts(
   const rows = data as unknown as QtAnswerRow[];
   const userIds = [...new Set(rows.map((r) => r.user_id))];
   const [activeUserIds, badgesMap] = await Promise.all([
-    getActiveUserIdsToday(),
+    fetchActiveUserIdsToday(),
     fetchUserStatsMap(userIds),
   ]);
   return rows.map((row) =>
@@ -102,7 +99,7 @@ export async function fetchUserPosts(
   }
 
   const [activeUserIds, badgesMap] = await Promise.all([
-    getActiveUserIdsToday([userId]),
+    fetchActiveUserIdsToday([userId]),
     fetchUserStatsMap([userId]),
   ]);
   return (data as unknown as UserPostRow[]).map((row) =>
@@ -112,6 +109,46 @@ export async function fetchUserPosts(
       badgesMap,
     }),
   );
+}
+
+export async function likePost(postId: string, userId: string): Promise<void> {
+  const supabase = createClient();
+  const { error } = await supabase
+    .from("oq_qt_likes")
+    .insert({ user_id: userId, answer_id: postId });
+  if (error) throw error;
+}
+
+export async function unlikePost(
+  postId: string,
+  userId: string,
+): Promise<void> {
+  const supabase = createClient();
+  const { error } = await supabase
+    .from("oq_qt_likes")
+    .delete()
+    .eq("user_id", userId)
+    .eq("answer_id", postId);
+  if (error) throw error;
+}
+
+export async function deletePost(
+  postId: string,
+  userId: string,
+): Promise<void> {
+  const supabase = createClient();
+  const { error } = await supabase
+    .from("oq_user_qt_answers")
+    .delete()
+    .eq("id", postId)
+    .eq("user_id", userId);
+  if (error) throw error;
+}
+
+export async function reportPost(postId: string): Promise<void> {
+  const supabase = createClient();
+  const { error } = await supabase.rpc("report_answer", { answer_id: postId });
+  if (error) throw error;
 }
 
 export async function fetchRecentReactions(userId: string, postIds: string[]) {

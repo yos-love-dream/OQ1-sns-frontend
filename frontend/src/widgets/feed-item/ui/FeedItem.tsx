@@ -4,13 +4,12 @@ import {
   ResponsiveModal,
   ResponsiveModalBody,
 } from "@shared/ui/responsive-modal";
-import { createClient } from "@shared/api/supabase/client";
 import { formatRelativeTime } from "@shared/lib/utils";
 import { Heart, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import type { Post } from "@entities/post";
+import { likePost, unlikePost, type Post } from "@entities/post";
 import { useAlert } from "@app/providers/AlertProvider";
 import { UserAvatar } from "@entities/user";
 import FeedItemComments from "./feed/FeedItemComments";
@@ -38,32 +37,21 @@ const FeedItem: React.FC<FeedItemProps> = ({ post, currentUserId }) => {
       return;
     }
 
-    const supabase = createClient();
     const prevLiked = liked;
 
     // Optimistic Update
     setLiked(!prevLiked);
     setCount((c) => (prevLiked ? c - 1 : c + 1));
 
-    if (!prevLiked) {
-      const { error } = await supabase.from("oq_qt_likes").insert({
-        user_id: currentUserId,
-        answer_id: post.id,
-      });
-      if (error) {
-        setLiked(false);
-        setCount((c) => c - 1);
+    try {
+      if (!prevLiked) {
+        await likePost(post.id, currentUserId);
+      } else {
+        await unlikePost(post.id, currentUserId);
       }
-    } else {
-      const { error } = await supabase
-        .from("oq_qt_likes")
-        .delete()
-        .eq("user_id", currentUserId)
-        .eq("answer_id", post.id);
-      if (error) {
-        setLiked(true);
-        setCount((c) => c + 1);
-      }
+    } catch {
+      setLiked(prevLiked);
+      setCount((c) => (prevLiked ? c + 1 : c - 1));
     }
   };
 

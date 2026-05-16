@@ -1,7 +1,7 @@
 import { getProfile, getUser } from "@shared/api/supabase/auth";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { SignupPage as SignupClientContent } from "@views/signup";
+import { SignupPage as SignupClientContent } from "@pages/signup";
 
 export const metadata: Metadata = {
   title: "회원가입",

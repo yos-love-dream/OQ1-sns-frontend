@@ -1,7 +1,7 @@
 "use client";
 
 import { useAlert } from "@app/providers/AlertProvider";
-import { createClient } from "@shared/api/supabase/client";
+import { signInWithOAuth } from "@shared/api/supabase/auth-client";
 import { useCallback } from "react";
 
 type OAuthProvider = "kakao" | "apple";
@@ -18,18 +18,10 @@ export function useOAuthLogin() {
           }
         }
 
-        const supabase = createClient();
-        const { data, error } = await supabase.auth.signInWithOAuth({
+        const data = await signInWithOAuth(
           provider,
-          options: {
-            redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
-          },
-        });
-        if (error) {
-          console.error(`${provider} signIn error:`, error);
-          showAlert("로그인에 실패했습니다.");
-          return;
-        }
+          `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+        );
         if (data?.url) {
           window.location.href = data.url;
         }

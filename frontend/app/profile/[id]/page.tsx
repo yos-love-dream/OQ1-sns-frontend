@@ -1,3 +1,3 @@
-import { ProfileDetailPage } from "@views/profile-detail";
+import { ProfileDetailPage } from "@pages/profile-detail";
 
 export default ProfileDetailPage;

@@ -1,8 +1,9 @@
 "use client";
 
 import { useAlert } from "@app/providers/AlertProvider";
+import { reactivateAccount } from "@entities/user";
 import { fadeRise } from "@shared/lib/animations";
-import { createClient } from "@shared/api/supabase/client";
+import { getCurrentUser } from "@shared/api/supabase/auth-client";
 import { motion } from "framer-motion";
 import { CheckCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -18,20 +19,16 @@ export default function ReactivateContent() {
     setIsReactivating(true);
 
     try {
-      const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const user = await getCurrentUser();
+      if (!user) {
+        showAlert("로그인이 필요합니다.", () => router.push("/login"));
+        setIsReactivating(false);
+        return;
+      }
 
-      // deleted_at을 NULL로 설정하여 계정 복구
-      const { error: updateError } = await supabase
-        .from("oq_users")
-        .update({
-          deleted_at: null,
-        })
-        .eq("id", user!.id);
-
-      if (updateError) {
+      try {
+        await reactivateAccount(user.id);
+      } catch (updateError) {
         console.error("Account reactivation error:", updateError);
         showAlert("계정 복구 중 오류가 발생했습니다. 다시 시도해 주세요.");
         setIsReactivating(false);

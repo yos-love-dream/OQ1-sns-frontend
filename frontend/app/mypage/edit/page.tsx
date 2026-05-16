@@ -1,5 +1,5 @@
 import { requireAuth } from "@shared/api/supabase/auth";
-import { MyPageEditPage } from "@views/mypage-edit";
+import { MyPageEditPage } from "@pages/mypage-edit";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

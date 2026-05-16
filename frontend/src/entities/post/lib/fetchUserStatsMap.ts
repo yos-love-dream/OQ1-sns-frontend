@@ -1,6 +1,6 @@
-import { createClient } from "@shared/api/supabase/client";
 import { parseDate } from "@shared/lib/utils";
 import { format } from "date-fns";
+import { fetchUserActivityRows, type UserActivityRow } from "../api/activity";
 import { computeUserBadges } from "./badge";
 
 const EARLY_BIRD_HOUR = 6;
@@ -13,7 +13,7 @@ interface UserActivityEntry {
 }
 
 function groupActivityByUser(
-  rows: { user_id: string; created_at: string }[],
+  rows: UserActivityRow[],
 ): Map<string, UserActivityEntry> {
   const byUser = new Map<string, UserActivityEntry>();
   for (const row of rows) {
@@ -46,20 +46,10 @@ function calculateMaxStreak(sortedDates: string[]): number {
   return Math.max(maxStreak, currentRun);
 }
 
-export async function fetchUserStatsMap(
-  userIds: string[],
-): Promise<Map<string, string[]>> {
-  if (userIds.length === 0) return new Map();
-
-  const supabase = createClient();
-  const { data } = await supabase
-    .from("oq_user_qt_answers")
-    .select("user_id, created_at")
-    .in("user_id", userIds)
-    .order("created_at", { ascending: true });
-  if (!data) return new Map();
-
-  const byUser = groupActivityByUser(data);
+export function buildUserStatsMap(
+  rows: UserActivityRow[],
+): Map<string, string[]> {
+  const byUser = groupActivityByUser(rows);
   const result = new Map<string, string[]>();
 
   for (const [uid, entry] of byUser) {
@@ -75,4 +65,12 @@ export async function fetchUserStatsMap(
   }
 
   return result;
+}
+
+export async function fetchUserStatsMap(
+  userIds: string[],
+): Promise<Map<string, string[]>> {
+  if (userIds.length === 0) return new Map();
+  const rows = await fetchUserActivityRows(userIds);
+  return buildUserStatsMap(rows);
 }

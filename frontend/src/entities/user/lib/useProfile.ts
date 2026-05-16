@@ -1,15 +1,10 @@
 "use client";
 
-import { createClient } from "@shared/api/supabase/client";
+import { getCurrentUser } from "@shared/api/supabase/auth-client";
 import { useCallback, useEffect, useState } from "react";
+import { fetchProfileRow, type ProfileRow } from "../api/userService";
 
-export interface ProfileData {
-  user_name: string;
-  guk_no: number;
-  birth_date: string;
-  enneagram_type: string | null;
-  avatar_url: string | null;
-}
+export type ProfileData = ProfileRow;
 
 export function useProfile() {
   const [profile, setProfile] = useState<ProfileData | null>(null);
@@ -17,58 +12,25 @@ export function useProfile() {
   const [error, setError] = useState<string | null>(null);
 
   const fetchProfile = useCallback(async () => {
-    const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) {
+    try {
+      const user = await getCurrentUser();
+      if (!user) {
+        setProfile(null);
+        setLoading(false);
+        return null;
+      }
+      const fallbackAvatar =
+        (user.user_metadata?.avatar_url as string | undefined) ?? null;
+      const row = await fetchProfileRow(user.id, fallbackAvatar);
+      setProfile(row);
+      setLoading(false);
+      return row;
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "프로필 로드 실패");
       setProfile(null);
       setLoading(false);
       return null;
     }
-    const { data: row, error: rowError } = await supabase
-      .from("oq_users")
-      .select("user_name, guk_no, birth_date, enneagram_type, avatar_url")
-      .eq("id", user.id)
-      .single();
-
-    if (rowError) {
-      setError(rowError.message);
-      setProfile(null);
-      setLoading(false);
-      return null;
-    }
-
-    const avatarUrl =
-      (row.avatar_url as string) ??
-      (user.user_metadata?.avatar_url as string) ??
-      null;
-
-    const raw = row.birth_date;
-    const birth =
-      raw == null
-        ? ""
-        : typeof raw === "string"
-          ? raw.slice(0, 10)
-          : typeof (raw as Date).toISOString === "function"
-            ? (raw as Date).toISOString().slice(0, 10)
-            : "";
-
-    setProfile({
-      user_name: row.user_name ?? "",
-      guk_no: row.guk_no ?? 1,
-      birth_date: birth,
-      enneagram_type: row.enneagram_type ?? null,
-      avatar_url: avatarUrl,
-    });
-    setLoading(false);
-    return {
-      user_name: row.user_name ?? "",
-      guk_no: row.guk_no ?? 1,
-      birth_date: birth,
-      enneagram_type: row.enneagram_type ?? null,
-      avatar_url: avatarUrl,
-    };
   }, []);
 
   useEffect(() => {

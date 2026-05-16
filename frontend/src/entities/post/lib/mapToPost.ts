@@ -1,5 +1,4 @@
-import { createClient } from "@shared/api/supabase/client";
-import { formatLineBreaks, getStartOfToday } from "@shared/lib/utils";
+import { formatLineBreaks } from "@shared/lib/utils";
 import type { Post } from "../model/types";
 import type { QtAnswerRow, UserPostRow } from "../model/types";
 
@@ -114,23 +113,4 @@ export function mapUserPostToPost(
   opts: MapToPostOptions,
 ): Post {
   return buildPost(normalizeUserPostRow(row), opts);
-}
-
-export async function getActiveUserIdsToday(
-  userIds?: string[],
-): Promise<Set<string>> {
-  const supabase = createClient();
-  const startOfToday = getStartOfToday();
-
-  let query = supabase
-    .from("oq_user_qt_answers")
-    .select("user_id")
-    .gte("created_at", startOfToday.toISOString());
-
-  if (userIds && userIds.length > 0) {
-    query = query.in("user_id", userIds);
-  }
-
-  const { data } = await query;
-  return new Set(data?.map((item) => item.user_id) || []);
 }

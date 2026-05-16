@@ -1,8 +1,9 @@
 import { createClient } from "@shared/api/supabase/client";
 import { formatLineBreaks, getNow } from "@shared/lib/utils";
 import { format } from "date-fns";
+import type { DailyQt } from "../model/types";
 
-export async function fetchTodayQt() {
+export async function fetchTodayQt(): Promise<DailyQt | null> {
   const supabase = createClient();
   const todayStr = format(getNow(), "yyyy-MM-dd");
 
@@ -24,6 +25,6 @@ export async function fetchTodayQt() {
     ).data;
 
   return qtData
-    ? { ...qtData, content: formatLineBreaks(qtData.content) }
+    ? { ...(qtData as DailyQt), content: formatLineBreaks(qtData.content) }
     : null;
 }

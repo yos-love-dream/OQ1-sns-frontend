@@ -22,7 +22,7 @@ import React, {
 import { createPost, State } from "../api/actions";
 import { useDailyQt } from "../lib/useDailyQt";
 import { useRewardConfetti } from "../lib/useRewardConfetti";
-import type { DailyQt } from "../model/types";
+import type { DailyQt } from "@entities/daily-word";
 import { AmbientParticles } from "./AmbientParticles";
 import { RewardOverlay } from "./RewardOverlay";
 import { ScriptureQuote } from "./ScriptureQuote";

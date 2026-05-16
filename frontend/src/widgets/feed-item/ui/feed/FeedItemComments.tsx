@@ -1,23 +1,15 @@
 "use client";
 
-import { createClient } from "@shared/api/supabase/client";
+import {
+  createComment,
+  fetchComments,
+  type PostCommentRow,
+} from "@entities/post";
 import { formatRelativeTime, sanitizeText } from "@shared/lib/utils";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useAlert } from "@app/providers/AlertProvider";
 import { UserAvatar } from "@entities/user";
-
-interface Comment {
-  id: string;
-  content: string;
-  created_at: string;
-  user_id: string;
-  user: {
-    user_name: string;
-    avatar_url: string | null;
-    hasDoneToday?: boolean;
-  } | null;
-}
 
 interface FeedItemCommentsProps {
   postId: string;
@@ -25,12 +17,14 @@ interface FeedItemCommentsProps {
   onCommentCountChange: (delta: number) => void;
 }
 
+const MAX_COMMENT_LENGTH = 1000;
+
 export default function FeedItemComments({
   postId,
   currentUserId,
   onCommentCountChange,
 }: FeedItemCommentsProps) {
-  const [comments, setComments] = useState<Comment[]>([]);
+  const [comments, setComments] = useState<PostCommentRow[]>([]);
   const [commentText, setCommentText] = useState("");
   const [loading, setLoading] = useState(true);
   const showAlert = useAlert();
@@ -38,23 +32,14 @@ export default function FeedItemComments({
   // 최초 마운트 시 댓글 로드
   useEffect(() => {
     const load = async () => {
-      const supabase = createClient();
-      const { data } = await supabase
-        .from("oq_qt_comments")
-        .select(
-          `
-          id, content, created_at, user_id,
-          user:oq_users!user_id (user_name, avatar_url)
-        `,
-        )
-        .eq("answer_id", postId)
-        .order("created_at", { ascending: true });
-
-      if (data) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        setComments(data as any as Comment[]);
+      try {
+        const rows = await fetchComments(postId);
+        setComments(rows);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,37 +49,21 @@ export default function FeedItemComments({
     e.preventDefault();
     if (!commentText.trim() || !currentUserId) return;
 
-    const supabase = createClient();
     const cleanComment = sanitizeText(commentText);
 
-    if (cleanComment.length > 1000) {
+    if (cleanComment.length > MAX_COMMENT_LENGTH) {
       showAlert("댓글은 1,000자 이내로 작성해 주세요.");
       return;
     }
 
     if (!cleanComment) return;
 
-    const { data, error } = await supabase
-      .from("oq_qt_comments")
-      .insert({
-        answer_id: postId,
-        user_id: currentUserId,
-        content: cleanComment,
-      })
-      .select(
-        `
-          id, content, created_at, user_id,
-          user:oq_users!user_id (user_name, avatar_url)
-      `,
-      )
-      .single();
-
-    if (data) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      setComments((prev) => [...prev, data as any as Comment]);
+    try {
+      const created = await createComment(postId, currentUserId, cleanComment);
+      setComments((prev) => [...prev, created]);
       onCommentCountChange(1);
       setCommentText("");
-    } else if (error) {
+    } catch (error) {
       console.error(error);
       showAlert("댓글 작성 실패");
     }
@@ -155,7 +124,7 @@ export default function FeedItemComments({
             value={commentText}
             onChange={(e) => setCommentText(e.target.value)}
             placeholder="댓글 달기..."
-            maxLength={1000}
+            maxLength={MAX_COMMENT_LENGTH}
             className="flex-1 text-[13px] bg-transparent border-none p-0 focus:ring-0 placeholder:text-gray-400 outline-hidden"
           />
           <button

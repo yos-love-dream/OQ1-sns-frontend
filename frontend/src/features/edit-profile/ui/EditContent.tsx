@@ -1,9 +1,8 @@
 "use client";
 
 import { useAlert } from "@app/providers/AlertProvider";
-import { UserAvatar, useProfile } from "@entities/user";
+import { UserAvatar, updateProfile, useProfile } from "@entities/user";
 import { profileSchema, type ProfileFormData } from "@entities/user";
-import { createClient } from "@shared/api/supabase/client";
 import { fadeRise } from "@shared/lib/animations";
 import { ENNEAGRAM_OPTIONS, INPUT_ERROR_CLASS } from "@shared/lib/constants";
 import { cn } from "@shared/lib/utils";
@@ -68,18 +67,14 @@ export default function EditContent({ userId }: EditContentProps) {
   }, [profile, reset]);
 
   const onSubmit = async (data: ProfileFormData) => {
-    const supabase = createClient();
-    const { error: updateError } = await supabase
-      .from("oq_users")
-      .update({
+    try {
+      await updateProfile(userId, {
         user_name: data.user_name,
         guk_no: data.guk_no,
         birth_date: data.birth_date,
         enneagram_type: data.enneagram_type,
-      })
-      .eq("id", userId);
-
-    if (updateError) {
+      });
+    } catch {
       showAlert("저장에 실패했습니다. 다시 시도해 주세요.");
       return;
     }

@@ -1,7 +1,7 @@
 "use client";
 
 import { Input } from "@shared/ui/input";
-import { createClient } from "@shared/api/supabase/client";
+import { signInWithPassword } from "@shared/api/supabase/auth-client";
 import { isFeatureEnabled } from "@shared/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -69,20 +69,11 @@ function LoginContent() {
     }
     setEmailLoading(true);
     try {
-      const supabase = createClient();
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) {
-        console.error("Email signIn error:", error);
-        showAlert("이메일 또는 비밀번호가 올바르지 않습니다.");
-        return;
-      }
+      await signInWithPassword(email, password);
       router.replace("/");
     } catch (e) {
-      console.error("Email login error:", e);
-      showAlert("로그인 중 문제가 발생했습니다.");
+      console.error("Email signIn error:", e);
+      showAlert("이메일 또는 비밀번호가 올바르지 않습니다.");
     } finally {
       setEmailLoading(false);
     }

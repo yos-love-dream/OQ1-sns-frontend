@@ -2,7 +2,10 @@
 
 import { useAlert } from "@app/providers/AlertProvider";
 import { fadeRise } from "@shared/lib/animations";
-import { createClient } from "@shared/api/supabase/client";
+import {
+  getCurrentSession,
+  signOut,
+} from "@shared/api/supabase/auth-client";
 import { motion } from "framer-motion";
 import { AlertTriangle, ChevronLeft } from "lucide-react";
 import Link from "next/link";
@@ -25,10 +28,7 @@ export default function DeleteContent() {
     setIsDeleting(true);
 
     try {
-      const supabase = createClient();
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+      const session = await getCurrentSession();
 
       if (!session) {
         showAlert("로그인이 필요합니다.", () => router.push("/login"));
@@ -58,7 +58,7 @@ export default function DeleteContent() {
       }
 
       // 로그아웃 처리 (이미 삭제되었으므로 로컬 세션만 정리)
-      await supabase.auth.signOut();
+      await signOut();
 
       // 탈퇴 완료 페이지로 이동
       router.push("/mypage/delete/complete");

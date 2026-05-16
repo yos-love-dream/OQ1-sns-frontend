@@ -1,3 +1,3 @@
-import { MyPageDemoPage } from "@views/mypage-demo";
+import { MyPageDemoPage } from "@pages/mypage-demo";
 
 export default MyPageDemoPage;

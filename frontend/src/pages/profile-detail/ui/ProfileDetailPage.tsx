@@ -1,6 +1,6 @@
 "use client";
 
-import { createClient } from "@shared/api/supabase/client";
+import { getCurrentUser } from "@shared/api/supabase/auth-client";
 import { MobileHeader } from "@widgets/mobile-header";
 import { ProfileView } from "@widgets/profile-view";
 import { ChevronLeft } from "lucide-react";
@@ -15,10 +15,7 @@ export function ProfileDetailPage() {
 
   useEffect(() => {
     const checkUser = async () => {
-      const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const user = await getCurrentUser();
       if (!user) return;
       setCurrentUserId(user.id);
       if (user.id === targetUserId) {

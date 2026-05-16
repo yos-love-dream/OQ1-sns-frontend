@@ -1,6 +1,6 @@
 import { redirectIfAuthenticated } from "@shared/api/supabase/auth";
 import type { Metadata } from "next";
-import { LoginContent as LoginPageContent } from "@views/login";
+import { LoginContent as LoginPageContent } from "@pages/login";
 
 export const metadata: Metadata = {
   title: "로그인",

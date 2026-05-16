@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { TermsPage } from "@views/terms";
+import { TermsPage } from "@pages/terms";
 
 export const metadata: Metadata = {
   title: "이용약관",

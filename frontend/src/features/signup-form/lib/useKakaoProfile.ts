@@ -1,6 +1,6 @@
 "use client";
 
-import { createClient } from "@shared/api/supabase/client";
+import { getCurrentUser } from "@shared/api/supabase/auth-client";
 import { useEffect, useState } from "react";
 
 export type KakaoProfile = {
@@ -20,10 +20,7 @@ export function useKakaoProfile(fromKakao: boolean): KakaoProfile {
     if (!fromKakao) return;
     let cancelled = false;
     const run = async () => {
-      const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const user = await getCurrentUser();
       if (cancelled) return;
       // TODO: 나중에 제거 예정. 카카오/Supabase user_metadata 확인용 (개발 환경에서만 출력)
       if (process.env.NODE_ENV === "development" && user) {

@@ -4,7 +4,7 @@ import { fadeRise } from "@shared/lib/animations";
 import { motion } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import type { DailyQt } from "../model/types";
+import type { DailyQt } from "@entities/daily-word";
 
 const COLLAPSED_HEIGHT_PX = 96;
 

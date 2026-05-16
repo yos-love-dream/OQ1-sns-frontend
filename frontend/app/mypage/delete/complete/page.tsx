@@ -1,3 +1,3 @@
-import { DeleteCompletePage } from "@views/mypage-delete-complete";
+import { DeleteCompletePage } from "@pages/mypage-delete-complete";
 
 export default DeleteCompletePage;
