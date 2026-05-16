@@ -1,15 +1,17 @@
 "use client";
 
 import { OAuthLoginButton, useOAuthLogin } from "@features/oauth-login";
+import {
+  EnneagramHero,
+  SignupFallback,
+  SignupForm,
+  useKakaoProfile,
+  useSignupFormDefaults,
+} from "@features/signup-form";
 import { fadeRise } from "@shared/lib/animations";
 import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useSyncExternalStore } from "react";
-import { useKakaoProfile } from "../lib/useKakaoProfile";
-import { useSignupFormDefaults } from "../lib/useSignupFormDefaults";
-import { EnneagramHero } from "./EnneagramHero";
-import { SignupFallback } from "./SignupFallback";
-import { SignupForm } from "./SignupForm";
 
 const ENNEAGRAM_STORAGE_KEY = "oauth:enneagram-type";
 const emptySubscribe = () => () => {};
@@ -126,11 +128,7 @@ function UnauthenticatedSignup({
         <p className="text-center text-xs text-gray-500 mt-2 mb-8">
           회원가입을 위해 먼저 카카오 로그인이 필요합니다.
         </p>
-        <OAuthLoginButton
-          provider="kakao"
-          onClick={onLogin}
-          variant="signup"
-        />
+        <OAuthLoginButton provider="kakao" onClick={onLogin} variant="signup" />
         <p className="text-center text-xs text-gray-500 mt-4">
           카카오 계정 하나로 로그인·가입됩니다.
         </p>
@@ -139,13 +137,11 @@ function UnauthenticatedSignup({
   );
 }
 
-interface SignupClientContentProps {
+interface SignupPageProps {
   isAuthenticated: boolean;
 }
 
-export default function SignupClientContent({
-  isAuthenticated,
-}: SignupClientContentProps) {
+export function SignupPage({ isAuthenticated }: SignupPageProps) {
   return (
     <Suspense fallback={<SignupFallback />}>
       <SignupContent isAuthenticated={isAuthenticated} />

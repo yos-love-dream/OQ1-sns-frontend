@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import {
   fetchPosts,
   fetchRecentReactions,
-  fetchTodayQt,
   fetchUserPosts,
   fetchUserProfile,
 } from "../api/postService";
@@ -49,9 +48,3 @@ export function useRecentReactions(
   });
 }
 
-export function useTodayQt() {
-  return useQuery({
-    queryKey: ["todayQt"],
-    queryFn: fetchTodayQt,
-  });
-}

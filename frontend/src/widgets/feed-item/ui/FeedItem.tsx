@@ -10,7 +10,7 @@ import { Heart, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import { Post } from "@shared/types";
+import type { Post } from "@entities/post";
 import { useAlert } from "@app/providers/AlertProvider";
 import { UserAvatar } from "@entities/user";
 import FeedItemComments from "./feed/FeedItemComments";

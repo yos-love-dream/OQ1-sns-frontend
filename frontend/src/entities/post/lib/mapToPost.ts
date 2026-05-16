@@ -1,6 +1,6 @@
 import { createClient } from "@shared/api/supabase/client";
 import { formatLineBreaks, getStartOfToday } from "@shared/lib/utils";
-import type { Post } from "@shared/types";
+import type { Post } from "../model/types";
 import type { QtAnswerRow, UserPostRow } from "../model/types";
 
 const DEFAULT_LEVEL = 1;

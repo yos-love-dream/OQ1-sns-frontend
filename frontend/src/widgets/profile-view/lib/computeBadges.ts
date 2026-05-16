@@ -1,5 +1,5 @@
-import { BADGES } from "@shared/lib/mock-data";
-import type { Badge } from "@shared/types";
+import { BADGES } from "@entities/user";
+import type { Badge } from "@entities/user";
 import type { ProfileStats } from "./useProfileStats";
 
 const SHORT_STREAK_THRESHOLD = 3;

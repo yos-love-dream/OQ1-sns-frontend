@@ -5,7 +5,7 @@ import {
   ResponsiveModal,
   ResponsiveModalBody,
 } from "@shared/ui/responsive-modal";
-import type { Badge } from "@shared/types";
+import type { Badge } from "@entities/user";
 import { motion } from "framer-motion";
 import { Award } from "lucide-react";
 import { useState } from "react";

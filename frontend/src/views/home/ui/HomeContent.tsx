@@ -4,9 +4,9 @@ import { formatDate, isSameDayCheck } from "@shared/lib/utils";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { DailyWordCard } from "@entities/daily-word";
-import { FeedItem, usePosts } from "@entities/post";
-import { MobileHeader } from "@widgets/navigation";
-import { FeedFilter } from "@shared/types";
+import { FeedFilter, usePosts } from "@entities/post";
+import { FeedItem } from "@widgets/feed-item";
+import { MobileHeader } from "@widgets/mobile-header";
 
 // ─── Animation Variants ────────────────────────────────────────────────────
 

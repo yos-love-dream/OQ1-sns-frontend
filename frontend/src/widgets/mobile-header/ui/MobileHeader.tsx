@@ -12,7 +12,7 @@ import { ko } from "date-fns/locale";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { EVENT_CHALLENGE } from "@shared/lib/mock-data";
+import { EVENT_CHALLENGE } from "@shared/config/event";
 
 interface MobileHeaderProps {
   rightContent?: React.ReactNode;

@@ -1,3 +1,34 @@
+import type { User } from "@entities/user";
+
+export interface Post {
+  id: string;
+  user: User;
+  content: string;
+  scriptureRef: string;
+  scriptureContent?: string;
+  scriptureTitle?: string;
+  imageUrl?: string;
+  isAnonymous?: boolean;
+  amenCount: number;
+  commentCount: number;
+  isLiked: boolean;
+  timestamp: string;
+  tags: string[];
+  likedUsers?: { userId: string; userName: string; avatarUrl?: string }[];
+}
+
+export interface Comment {
+  id: string;
+  user: User;
+  text: string;
+  timestamp: string;
+}
+
+export enum FeedFilter {
+  ALL = "ALL",
+  MY_TYPE = "MY_TYPE",
+}
+
 export interface QtAnswerRow {
   id: string;
   meditation: string;

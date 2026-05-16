@@ -15,8 +15,8 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useCopyToClipboard } from "@shared/hooks/useCopyToClipboard";
 import { getDailyInsight } from "@shared/api/ai-service";
-import { fetchTodayQt } from "@entities/post";
-import type { DailyWord } from "@shared/types";
+import { fetchTodayQt } from "../api/fetchTodayQt";
+import type { DailyWord } from "../model/types";
 
 interface Props {
   /** demo 페이지 전용: 실제 데이터가 없을 때 표시할 목데이터 */

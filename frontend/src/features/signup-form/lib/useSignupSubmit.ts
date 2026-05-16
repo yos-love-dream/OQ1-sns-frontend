@@ -1,7 +1,7 @@
 "use client";
 
 import { useAlert } from "@app/providers/AlertProvider";
-import type { SignupFormData } from "@features/signup-form";
+import type { SignupFormData } from "./schema";
 import { createClient } from "@shared/api/supabase/client";
 import { useRouter } from "next/navigation";
 

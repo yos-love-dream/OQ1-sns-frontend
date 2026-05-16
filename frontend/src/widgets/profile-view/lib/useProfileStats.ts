@@ -1,5 +1,5 @@
 import { parseDate } from "@shared/lib/utils";
-import type { Post } from "@shared/types";
+import type { Post } from "@entities/post";
 import { useMemo } from "react";
 import { calculateStreaks } from "./streaks";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { EVENT_CHALLENGE } from "@shared/lib/mock-data";
+import { EVENT_CHALLENGE } from "@shared/config/event";
 import { getNow } from "@shared/lib/utils";
 import { differenceInCalendarDays, format, parseISO } from "date-fns";
 import { ko } from "date-fns/locale";

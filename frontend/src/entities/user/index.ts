@@ -1,3 +1,7 @@
 export { default as UserAvatar } from "./ui/UserAvatar";
 export { default as UserBadges } from "./ui/UserBadges";
 export { useProfile, type ProfileData } from "./lib/useProfile";
+export type { User, OqUser, Badge } from "./model/types";
+export { CURRENT_USER, BADGES } from "./model/mocks";
+export { ENNEAGRAM_MAP } from "./model/enneagram-map";
+export { profileSchema, type ProfileFormData } from "./model/profile-schema";

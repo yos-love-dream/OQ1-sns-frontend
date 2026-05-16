@@ -1,26 +1,5 @@
-import { Badge, DailyWord, Post, User } from "@shared/types";
-
-/** demo 페이지 전용 목데이터 — 실제 서비스에서 사용 금지 */
-export const TODAY_WORD: DailyWord = {
-  date: "2024년 5월 20일",
-  reference: "시편 23:1-6",
-  title: "여호와는 나의 목자시니",
-  text: "여호와는 나의 목자시니 내게 부족함이 없으리로다. 그가 나를 푸른 풀밭에 누이시며 쉴 만한 물 가로 인도하시는도다. 내 영혼을 소생시키시고 자기 이름을 위하여 의의 길로 인도하시는도다.",
-  keyVerse:
-    "내 평생에 선하심과 인자하심이 반드시 나를 따르리니 내가 여호와의 집에 영원히 살리로다 (시 23:6)",
-};
-
-export const CURRENT_USER: User = {
-  id: "u1",
-  name: "김은혜",
-  avatar: "https://picsum.photos/100/100",
-  type: "Morning",
-  streak: 14,
-  group: "청년 1부",
-  level: 3,
-  currentExp: 340,
-  maxExp: 500,
-};
+import { CURRENT_USER } from "@entities/user";
+import type { Post } from "./types";
 
 export const MOCK_POSTS: Post[] = [
   {
@@ -82,7 +61,7 @@ export const MOCK_POSTS: Post[] = [
   },
 ];
 
-/** 마이페이지용: 내가 과거에 작성한 큐티 묵상 목록 (인스타그램 피드처럼 아래로 쭉) */
+/** 마이페이지용: 내가 과거에 작성한 큐티 묵상 목록 */
 export const MOCK_MY_POSTS: Post[] = [
   {
     id: "my1",
@@ -146,54 +125,3 @@ export const MOCK_MY_POSTS: Post[] = [
     tags: ["#신뢰", "#인도"],
   },
 ];
-
-export const BADGES: Badge[] = [
-  {
-    id: "b1",
-    name: "작심삼일 탈출",
-    description: "3일 연속 큐티 인증",
-    icon: "🌱",
-    acquired: true,
-    dateAcquired: "2024-03-10",
-  },
-  {
-    id: "b2",
-    name: "일주일의 기적",
-    description: "7일 연속 큐티 인증",
-    icon: "🔥",
-    acquired: true,
-    dateAcquired: "2024-03-17",
-  },
-  {
-    id: "b3",
-    name: "새벽이슬",
-    description: "오전 6시 이전 인증 10회",
-    icon: "🌅",
-    acquired: false,
-  },
-  {
-    id: "b4",
-    name: "묵상의 고수",
-    description: "총 100회 인증 달성",
-    icon: "👑",
-    acquired: false,
-  },
-];
-
-export const ENNEAGRAM_MAP: Record<string, { name: string; bg: string; text: string }> = {
-  "1": { name: "모세", bg: "bg-blue-50", text: "text-blue-700" },
-  "2": { name: "룻", bg: "bg-rose-50", text: "text-rose-700" },
-  "3": { name: "사무엘", bg: "bg-amber-50", text: "text-amber-700" },
-  "4": { name: "세례 요한", bg: "bg-violet-50", text: "text-violet-700" },
-  "5": { name: "요셉", bg: "bg-emerald-50", text: "text-emerald-700" },
-  "6": { name: "이삭", bg: "bg-sky-50", text: "text-sky-700" },
-  "7": { name: "솔로몬", bg: "bg-orange-50", text: "text-orange-700" },
-  "8": { name: "다윗", bg: "bg-red-50", text: "text-red-700" },
-  "9": { name: "아브라함", bg: "bg-teal-50", text: "text-teal-700" },
-};
-
-export const EVENT_CHALLENGE = {
-  name: "2026 봄 특별새벽기도회",
-  startDate: "2026-04-06",
-  endDate: "2026-04-11",
-};

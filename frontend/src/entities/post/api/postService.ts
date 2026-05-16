@@ -1,7 +1,6 @@
 import { createClient } from "@shared/api/supabase/client";
-import { formatLineBreaks, getNow, parseDate } from "@shared/lib/utils";
-import type { Post } from "@shared/types";
-import { format } from "date-fns";
+import { parseDate } from "@shared/lib/utils";
+import type { Post } from "../model/types";
 import { fetchUserStatsMap } from "../lib/fetchUserStatsMap";
 import {
   getActiveUserIdsToday,
@@ -152,28 +151,3 @@ export async function fetchRecentReactions(userId: string, postIds: string[]) {
     .slice(0, REACTION_LIMIT);
 }
 
-export async function fetchTodayQt() {
-  const supabase = createClient();
-  const todayStr = format(getNow(), "yyyy-MM-dd");
-
-  const { data: todayQt } = await supabase
-    .from("oq_daily_qt")
-    .select("*")
-    .eq("qt_date", todayStr)
-    .single();
-
-  const qtData =
-    todayQt ??
-    (
-      await supabase
-        .from("oq_daily_qt")
-        .select("*")
-        .order("qt_date", { ascending: false })
-        .limit(1)
-        .single()
-    ).data;
-
-  return qtData
-    ? { ...qtData, content: formatLineBreaks(qtData.content) }
-    : null;
-}

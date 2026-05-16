@@ -6,7 +6,7 @@ import { Lock, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Post } from "@shared/types";
+import type { Post } from "@entities/post";
 import { useAlert } from "@app/providers/AlertProvider";
 import { useConfirm } from "@app/providers/ConfirmProvider";
 import { UserAvatar, UserBadges } from "@entities/user";

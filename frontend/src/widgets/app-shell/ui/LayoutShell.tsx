@@ -3,8 +3,8 @@
 import { usePathname } from 'next/navigation';
 import { AlertProvider } from '@app/providers/AlertProvider';
 import { ConfirmProvider } from '@app/providers/ConfirmProvider';
-import { BottomNav, Sidebar } from '@widgets/navigation';
 import { QueryProvider } from '@app/providers/QueryProvider';
+import { BottomNav, Sidebar } from './Navigation';
 
 const MINIMAL_LAYOUT_PATHS = ['/login', '/signup', '/privacy', '/terms'];
 

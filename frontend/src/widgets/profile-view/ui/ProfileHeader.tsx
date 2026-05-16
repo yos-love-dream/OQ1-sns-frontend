@@ -2,7 +2,7 @@
 
 import { UserAvatar, UserBadges } from "@entities/user";
 import { fadeRise } from "@shared/lib/animations";
-import type { Badge } from "@shared/types";
+import type { Badge } from "@entities/user";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import type { ReactNode } from "react";

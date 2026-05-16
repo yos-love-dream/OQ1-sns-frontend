@@ -2,11 +2,11 @@
 
 import { ActivityCalendar } from "@entities/activity";
 import {
-  FeedItem,
   useRecentReactions,
   useUserPosts,
   useUserProfile,
 } from "@entities/post";
+import { FeedItem } from "@widgets/feed-item";
 import { fadeRise } from "@shared/lib/animations";
 import { isFeatureEnabled } from "@shared/lib/utils";
 import { motion } from "framer-motion";

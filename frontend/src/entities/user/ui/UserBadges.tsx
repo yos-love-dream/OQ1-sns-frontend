@@ -1,6 +1,6 @@
 "use client";
 
-import { ENNEAGRAM_MAP } from "@shared/lib/mock-data";
+import { ENNEAGRAM_MAP } from "../model/enneagram-map";
 
 interface UserBadgesProps {
   enneagramType?: string;

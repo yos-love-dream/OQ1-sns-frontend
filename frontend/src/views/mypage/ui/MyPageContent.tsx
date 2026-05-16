@@ -10,7 +10,7 @@ import { LogOut, Menu } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useConfirm } from "@app/providers/ConfirmProvider";
-import { MobileHeader } from "@widgets/navigation";
+import { MobileHeader } from "@widgets/mobile-header";
 import { ProfileView } from "@widgets/profile-view";
 
 function ProfileMenu() {
