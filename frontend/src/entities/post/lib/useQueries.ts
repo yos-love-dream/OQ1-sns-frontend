@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import {
   fetchPosts,
   fetchRecentReactions,
@@ -8,18 +8,16 @@ import {
 } from "../api/postService";
 
 export function usePosts(currentUserId: string | null) {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ["posts", currentUserId],
     queryFn: () => fetchPosts(currentUserId),
-    enabled: currentUserId !== undefined,
   });
 }
 
 export function useUserPosts(userId: string, isOwnProfile: boolean) {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ["userPosts", userId, isOwnProfile],
     queryFn: () => fetchUserPosts(userId, isOwnProfile),
-    enabled: !!userId,
   });
 }
 

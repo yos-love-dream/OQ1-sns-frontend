@@ -60,3 +60,18 @@ export function isApiResponseValidationError(
 export function isNetworkError(e: unknown): e is NetworkError {
   return e instanceof NetworkError;
 }
+
+const UNAUTHORIZED_STATUS = 401;
+
+/**
+ * 로컬 boundary가 잡으면 안 되는 에러 — 전역(root)에서만 처리되어야 한다.
+ * - 스키마 불일치: 서버 계약 위반, 운영 차원 대응 필요
+ * - 401 Unauthorized: 세션 만료 등 전역 라우팅(/login)이 필요
+ */
+export function isCriticalError(error: unknown): boolean {
+  if (error instanceof ApiResponseValidationError) return true;
+  if (error instanceof ApiError && error.status === UNAUTHORIZED_STATUS) {
+    return true;
+  }
+  return false;
+}
