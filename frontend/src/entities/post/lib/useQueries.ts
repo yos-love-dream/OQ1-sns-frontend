@@ -5,7 +5,6 @@ import {
   fetchPosts,
   fetchRecentReactions,
   fetchUserPosts,
-  fetchUserProfile,
 } from "../api/postService";
 
 export function usePosts(currentUserId: string | null) {
@@ -13,18 +12,6 @@ export function usePosts(currentUserId: string | null) {
     queryKey: ["posts", currentUserId],
     queryFn: () => fetchPosts(currentUserId),
     enabled: currentUserId !== undefined,
-  });
-}
-
-export function useUserProfile(
-  userId: string,
-  initialData?: Awaited<ReturnType<typeof fetchUserProfile>>,
-) {
-  return useQuery({
-    queryKey: ["userProfile", userId],
-    queryFn: () => fetchUserProfile(userId),
-    enabled: !!userId,
-    initialData,
   });
 }
 
@@ -47,4 +34,3 @@ export function useRecentReactions(
     enabled: enabled && postIds.length > 0,
   });
 }
-

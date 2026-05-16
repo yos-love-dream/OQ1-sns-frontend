@@ -14,7 +14,7 @@ import {
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useCopyToClipboard } from "@shared/hooks/useCopyToClipboard";
-import { getDailyInsight } from "@shared/api/ai-service";
+import { getDailyInsight } from "../api/aiInsight";
 import { fetchTodayQt } from "../api/fetchTodayQt";
 import type { DailyWord } from "../model/types";
 

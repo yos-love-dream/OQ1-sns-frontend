@@ -67,9 +67,9 @@ export const getDailyInsight = async (scripture: string): Promise<string> => {
     cacheTag: "daily-insight",
     promptTemplate: (
       scriptureText,
-    ) => `다음 성경 구절을 읽고, 오늘 하루 적용할 수 있는 묵상 질문 한 개를 작성해줘. 
+    ) => `다음 성경 구절을 읽고, 오늘 하루 적용할 수 있는 묵상 질문 한 개를 작성해줘.
           친근하고 따뜻한 어조로, 마크다운 문법 제외하고 텍스트로만 응답해줘.
-          
+
           성경 본문: ${scriptureText}`,
   });
 };
@@ -82,9 +82,9 @@ export const getDailySummary = async (scripture: string): Promise<string> => {
     cacheTag: "daily-summary",
     promptTemplate: (
       scriptureText,
-    ) => `다음 성경 구절을 읽고, 이해하기 쉽게 핵심 내용을 앞뒤 인삿말 없이 간결하게 요약해줘. 
+    ) => `다음 성경 구절을 읽고, 이해하기 쉽게 핵심 내용을 앞뒤 인삿말 없이 간결하게 요약해줘.
           따뜻한 어조로, 마크다운 문법 제외하고 텍스트로만 평문으로 응답해줘.
-          
+
           성경 본문: ${scriptureText}`,
   });
 };

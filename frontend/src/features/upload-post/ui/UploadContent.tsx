@@ -2,7 +2,7 @@
 
 import { useAlert } from "@app/providers/AlertProvider";
 import { UserAvatar } from "@entities/user";
-import { getDailyInsight } from "@shared/api/ai-service";
+import { getDailyInsight } from "@entities/daily-word";
 import { fadeRise } from "@shared/lib/animations";
 import { isFeatureEnabled, sanitizeText } from "@shared/lib/utils";
 import { Input } from "@shared/ui/input";

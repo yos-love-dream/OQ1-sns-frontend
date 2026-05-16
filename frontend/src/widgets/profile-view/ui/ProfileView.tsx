@@ -1,11 +1,8 @@
 "use client";
 
 import { ActivityCalendar } from "@entities/activity";
-import {
-  useRecentReactions,
-  useUserPosts,
-  useUserProfile,
-} from "@entities/post";
+import { useRecentReactions, useUserPosts } from "@entities/post";
+import { useUserProfile } from "@entities/user";
 import { FeedItem } from "@widgets/feed-item";
 import { fadeRise } from "@shared/lib/animations";
 import { isFeatureEnabled } from "@shared/lib/utils";

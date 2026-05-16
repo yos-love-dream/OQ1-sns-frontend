@@ -49,25 +49,6 @@ export async function fetchPosts(
   );
 }
 
-export async function fetchUserProfile(userId: string) {
-  const supabase = createClient();
-  const { data, error } = await supabase
-    .from("oq_users")
-    .select("*")
-    .eq("id", userId)
-    .single();
-
-  if (error || !data) {
-    if (error) console.error("Error fetching user profile:", error);
-    return null;
-  }
-
-  return {
-    ...data,
-    avatar_url: data.avatar_url || "",
-  };
-}
-
 export async function fetchUserPosts(
   userId: string,
   isOwnProfile: boolean,
