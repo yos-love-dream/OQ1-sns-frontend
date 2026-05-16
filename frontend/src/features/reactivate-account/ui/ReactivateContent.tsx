@@ -1,6 +1,6 @@
 "use client";
 
-import { useAlert } from "@app/providers/AlertProvider";
+import { useAlert } from "@shared/lib/alert";
 import { reactivateAccount } from "@entities/user";
 import { fadeRise } from "@shared/lib/animations";
 import { getCurrentUser } from "@shared/api/supabase/auth-client";

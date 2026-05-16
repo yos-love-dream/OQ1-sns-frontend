@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
-import { useAlert } from "@app/providers/AlertProvider";
+import { useAlert } from "@shared/lib/alert";
 import { OAuthLoginButton, useOAuthLogin } from "@features/oauth-login";
 
 const fadeRise = (delay = 0) => ({

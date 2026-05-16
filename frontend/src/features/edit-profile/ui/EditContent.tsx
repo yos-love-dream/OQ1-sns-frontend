@@ -1,6 +1,6 @@
 "use client";
 
-import { useAlert } from "@app/providers/AlertProvider";
+import { useAlert } from "@shared/lib/alert";
 import { UserAvatar, updateProfile, useProfile } from "@entities/user";
 import { profileSchema, type ProfileFormData } from "@entities/user";
 import { fadeRise } from "@shared/lib/animations";

@@ -1,10 +1,10 @@
 import { createClient } from "@shared/api/supabase/client";
+import { unwrap } from "@shared/api/supabase/unwrap";
 import { getStartOfToday } from "@shared/lib/utils";
+import { z } from "zod";
+import { UserActivityRowSchema, UserIdRowSchema } from "./schemas";
 
-export interface UserActivityRow {
-  user_id: string;
-  created_at: string;
-}
+export type UserActivityRow = z.infer<typeof UserActivityRowSchema>;
 
 export async function fetchUserActivityRows(
   userIds: string[],
@@ -12,12 +12,14 @@ export async function fetchUserActivityRows(
   if (userIds.length === 0) return [];
 
   const supabase = createClient();
-  const { data } = await supabase
-    .from("oq_user_qt_answers")
-    .select("user_id, created_at")
-    .in("user_id", userIds)
-    .order("created_at", { ascending: true });
-  return data ?? [];
+  return unwrap(
+    supabase
+      .from("oq_user_qt_answers")
+      .select("user_id, created_at")
+      .in("user_id", userIds)
+      .order("created_at", { ascending: true }),
+    z.array(UserActivityRowSchema),
+  );
 }
 
 export async function fetchActiveUserIdsToday(
@@ -35,6 +37,6 @@ export async function fetchActiveUserIdsToday(
     query = query.in("user_id", userIds);
   }
 
-  const { data } = await query;
-  return new Set(data?.map((item) => item.user_id) ?? []);
+  const rows = await unwrap(query, z.array(UserIdRowSchema));
+  return new Set(rows.map((item) => item.user_id));
 }

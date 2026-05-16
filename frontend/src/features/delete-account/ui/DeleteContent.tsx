@@ -1,6 +1,6 @@
 "use client";
 
-import { useAlert } from "@app/providers/AlertProvider";
+import { useAlert } from "@shared/lib/alert";
 import { fadeRise } from "@shared/lib/animations";
 import {
   getCurrentSession,

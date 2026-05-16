@@ -1,6 +1,6 @@
 "use client";
 
-import { useAlert } from "@app/providers/AlertProvider";
+import { useAlert } from "@shared/lib/alert";
 import { updateProfile } from "@entities/user";
 import type { SignupFormData } from "./schema";
 import { getCurrentUser } from "@shared/api/supabase/auth-client";

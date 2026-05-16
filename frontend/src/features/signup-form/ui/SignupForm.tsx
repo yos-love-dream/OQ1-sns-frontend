@@ -1,6 +1,6 @@
 "use client";
 
-import { useAlert } from "@app/providers/AlertProvider";
+import { useAlert } from "@shared/lib/alert";
 import { UserAvatar } from "@entities/user";
 import { DatePicker } from "@shared/ui/date-picker";
 import { Input } from "@shared/ui/input";

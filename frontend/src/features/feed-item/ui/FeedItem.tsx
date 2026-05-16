@@ -10,7 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { likePost, unlikePost, type Post } from "@entities/post";
-import { useAlert } from "@app/providers/AlertProvider";
+import { useAlert } from "@shared/lib/alert";
 import { UserAvatar } from "@entities/user";
 import FeedItemComments from "./feed/FeedItemComments";
 import FeedItemContent from "./feed/FeedItemContent";
@@ -19,6 +19,40 @@ import FeedItemHeader from "./feed/FeedItemHeader";
 interface FeedItemProps {
   post: Post;
   currentUserId: string | null;
+}
+
+type LikedUser = { userId: string; userName: string };
+
+function formatAmenText(
+  count: number,
+  liked: boolean,
+  likedUsers: LikedUser[],
+  currentUserId: string | null,
+): string {
+  const others = liked
+    ? likedUsers.filter((u) => u.userId !== currentUserId)
+    : likedUsers;
+
+  if (liked) {
+    if (count === 1) return "내가 아멘했습니다";
+    if (count === 2) {
+      return others[0]
+        ? `${others[0].userName}님과 내가 아멘했습니다`
+        : `나 외 1명이 아멘했습니다`;
+    }
+    return others[0]
+      ? `${others[0].userName}님 외 ${count - 2}명과 내가 아멘했습니다`
+      : `나 외 ${count - 1}명이 아멘했습니다`;
+  }
+
+  if (!others[0]) return `아멘 ${count}개`;
+  if (count === 1) return `${others[0].userName}님이 아멘했습니다`;
+  if (count === 2) {
+    return others[1]
+      ? `${others[0].userName}님과 ${others[1].userName}님이 아멘했습니다`
+      : `${others[0].userName}님 외 1명이 아멘했습니다`;
+  }
+  return `${others[0].userName}님 외 ${count - 1}명이 아멘했습니다`;
 }
 
 const FeedItem: React.FC<FeedItemProps> = ({ post, currentUserId }) => {
@@ -117,32 +151,12 @@ const FeedItem: React.FC<FeedItemProps> = ({ post, currentUserId }) => {
               className="text-[13px] font-bold text-gray-900 text-left"
               onClick={() => setShowLikers(true)}
             >
-              {(() => {
-                const others = liked
-                  ? (post.likedUsers || []).filter(
-                      (u) => u.userId !== currentUserId,
-                    )
-                  : post.likedUsers || [];
-                if (liked) {
-                  if (count === 1) return "내가 아멘했습니다";
-                  if (count === 2)
-                    return others[0]
-                      ? `${others[0].userName}님과 내가 아멘했습니다`
-                      : `나 외 1명이 아멘했습니다`;
-                  return others[0]
-                    ? `${others[0].userName}님 외 ${count - 2}명과 내가 아멘했습니다`
-                    : `나 외 ${count - 1}명이 아멘했습니다`;
-                } else {
-                  if (!others[0]) return `아멘 ${count}개`;
-                  if (count === 1)
-                    return `${others[0].userName}님이 아멘했습니다`;
-                  if (count === 2)
-                    return others[1]
-                      ? `${others[0].userName}님과 ${others[1].userName}님이 아멘했습니다`
-                      : `${others[0].userName}님 외 1명이 아멘했습니다`;
-                  return `${others[0].userName}님 외 ${count - 1}명이 아멘했습니다`;
-                }
-              })()}
+              {formatAmenText(
+                count,
+                liked,
+                post.likedUsers ?? [],
+                currentUserId,
+              )}
             </button>
           )}
         </div>

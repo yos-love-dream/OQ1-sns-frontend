@@ -1,8 +1,22 @@
-import type { User } from "@entities/user";
+/** Post 표시용 작성자 정보. entities/user의 User와 별도로 정의해 cross-import를 피한다. */
+export interface PostAuthor {
+  id: string;
+  name: string;
+  avatar: string;
+  type: "Morning" | "Night" | "Lunch" | "Anytime";
+  streak: number;
+  group: string;
+  level: number;
+  currentExp: number;
+  maxExp: number;
+  hasDoneToday?: boolean;
+  enneagramType?: string;
+  badges?: string[];
+}
 
 export interface Post {
   id: string;
-  user: User;
+  user: PostAuthor;
   content: string;
   scriptureRef: string;
   scriptureContent?: string;
@@ -19,7 +33,7 @@ export interface Post {
 
 export interface Comment {
   id: string;
-  user: User;
+  user: PostAuthor;
   text: string;
   timestamp: string;
 }
@@ -27,63 +41,4 @@ export interface Comment {
 export enum FeedFilter {
   ALL = "ALL",
   MY_TYPE = "MY_TYPE",
-}
-
-export interface QtAnswerRow {
-  id: string;
-  meditation: string;
-  created_at: string;
-  is_public: boolean;
-  user_id: string;
-  user: {
-    id: string;
-    user_name: string;
-    guk_no: number;
-    avatar_url?: string;
-    enneagram_type?: string;
-  } | null;
-  daily_qt: {
-    bible_book: string;
-    chapter: number;
-    verse_from: number;
-    verse_to: number;
-    content: string;
-  };
-  likes: {
-    user_id: string;
-    user: { user_name: string; avatar_url?: string };
-  }[];
-  comments: { count: number }[];
-  liked_by_me: { user_id: string }[];
-}
-
-export interface UserPostRow {
-  id: string;
-  user_id?: string;
-  created_at: string;
-  meditation: string;
-  is_public: boolean;
-  oq_daily_qt: {
-    qt_date: string;
-    bible_book: string;
-    chapter: number;
-    verse_from: number;
-    verse_to: number;
-    content: string;
-  };
-  likes: {
-    user_id: string;
-    user: { user_name: string; avatar_url?: string };
-  }[];
-  comments: { count: number }[];
-  liked_by_me: { user_id: string }[];
-}
-
-export interface DBReactionRow {
-  id: string;
-  created_at: string;
-  user: {
-    user_name: string;
-    avatar_url?: string;
-  } | null;
 }

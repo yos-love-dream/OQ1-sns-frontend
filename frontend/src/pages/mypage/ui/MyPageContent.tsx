@@ -9,7 +9,7 @@ import { signOut } from "@shared/api/supabase/auth-client";
 import { LogOut, Menu } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useConfirm } from "@app/providers/ConfirmProvider";
+import { useConfirm } from "@shared/lib/confirm";
 import { MobileHeader } from "@widgets/mobile-header";
 import { ProfileView } from "@widgets/profile-view";
 

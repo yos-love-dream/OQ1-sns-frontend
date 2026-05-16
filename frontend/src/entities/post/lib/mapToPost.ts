@@ -1,6 +1,6 @@
 import { formatLineBreaks } from "@shared/lib/utils";
 import type { Post } from "../model/types";
-import type { QtAnswerRow, UserPostRow } from "../model/types";
+import type { QtAnswerRow, UserPostRow } from "../api/schemas";
 
 const DEFAULT_LEVEL = 1;
 const DEFAULT_MAX_EXP = 100;
@@ -74,7 +74,7 @@ function buildPost(source: NormalizedSource, opts: MapToPostOptions): Post {
       currentExp: 0,
       maxExp: DEFAULT_MAX_EXP,
       hasDoneToday: opts.activeUserIds.has(userId),
-      enneagramType: user?.enneagram_type,
+      enneagramType: user?.enneagram_type ?? undefined,
       badges: opts.badgesMap.get(userId) || [],
     },
     content: source.meditation,
@@ -90,7 +90,7 @@ function buildPost(source: NormalizedSource, opts: MapToPostOptions): Post {
       likes?.map((l) => ({
         userId: l.user_id,
         userName: l.user?.user_name || "알 수 없음",
-        avatarUrl: l.user?.avatar_url,
+        avatarUrl: l.user?.avatar_url ?? undefined,
       })) ?? [],
     commentCount: comments?.[0]?.count || 0,
     isLiked: isLikedByMe,

@@ -8,7 +8,7 @@ import {
 import { formatRelativeTime, sanitizeText } from "@shared/lib/utils";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useAlert } from "@app/providers/AlertProvider";
+import { useAlert } from "@shared/lib/alert";
 import { UserAvatar } from "@entities/user";
 
 interface FeedItemCommentsProps {

@@ -3,7 +3,13 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { LayoutShell } from "@widgets/app-shell";
-import { SerwistProvider } from "@app/providers/SerwistProvider";
+import {
+  AppErrorBoundary,
+  QueryProvider,
+  SerwistProvider,
+} from "@app/providers";
+import { AlertProvider } from "@shared/lib/alert";
+import { ConfirmProvider } from "@shared/lib/confirm";
 import "@app/styles/globals.css";
 
 const geistSans = Geist({
@@ -58,7 +64,15 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SerwistProvider swUrl="/serwist/sw.js">
-          <LayoutShell>{children}</LayoutShell>
+          <QueryProvider>
+            <AlertProvider>
+              <ConfirmProvider>
+                <AppErrorBoundary>
+                  <LayoutShell>{children}</LayoutShell>
+                </AppErrorBoundary>
+              </ConfirmProvider>
+            </AlertProvider>
+          </QueryProvider>
         </SerwistProvider>
         <Toaster position="top-center" richColors duration={1500} />
         {process.env.NODE_ENV === "development" && <Agentation />}

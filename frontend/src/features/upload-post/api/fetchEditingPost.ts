@@ -1,5 +1,7 @@
 import { createClient } from "@shared/api/supabase/client";
+import { unwrapOrNull } from "@shared/api/supabase/unwrap";
 import type { DailyQt } from "@entities/daily-word";
+import { EditingPostRowSchema } from "./schemas";
 
 export interface EditingPost {
   meditation: string;
@@ -15,18 +17,20 @@ export async function fetchEditingPost(
   editPostId: string,
 ): Promise<EditingPostBundle | null> {
   const supabase = createClient();
-  const { data } = await supabase
-    .from("oq_user_qt_answers")
-    .select("*, daily_qt:daily_qt_id(*)")
-    .eq("id", editPostId)
-    .single();
+  const data = await unwrapOrNull(
+    supabase
+      .from("oq_user_qt_answers")
+      .select("*, daily_qt:daily_qt_id(*)")
+      .eq("id", editPostId)
+      .single(),
+    EditingPostRowSchema,
+  );
   if (!data) return null;
   return {
     editingPost: {
-      meditation: data.meditation as string,
-      is_public: data.is_public as boolean,
+      meditation: data.meditation,
+      is_public: data.is_public,
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- supabase join shape
-    dailyQt: data.daily_qt as any as DailyQt,
+    dailyQt: { ...data.daily_qt, content: data.daily_qt.content ?? undefined },
   };
 }

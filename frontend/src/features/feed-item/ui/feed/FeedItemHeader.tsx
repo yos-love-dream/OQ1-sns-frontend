@@ -6,8 +6,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { deletePost, reportPost, type Post } from "@entities/post";
-import { useAlert } from "@app/providers/AlertProvider";
-import { useConfirm } from "@app/providers/ConfirmProvider";
+import { useAlert } from "@shared/lib/alert";
+import { useConfirm } from "@shared/lib/confirm";
 import { UserAvatar, UserBadges } from "@entities/user";
 
 interface FeedItemHeaderProps {

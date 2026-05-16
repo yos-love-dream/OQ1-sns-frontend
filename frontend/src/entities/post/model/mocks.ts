@@ -1,5 +1,16 @@
-import { CURRENT_USER } from "@entities/user";
-import type { Post } from "./types";
+import type { Post, PostAuthor } from "./types";
+
+const MOCK_CURRENT_AUTHOR: PostAuthor = {
+  id: "u1",
+  name: "김은혜",
+  avatar: "https://picsum.photos/100/100",
+  type: "Morning",
+  streak: 14,
+  group: "청년 1부",
+  level: 3,
+  currentExp: 340,
+  maxExp: 500,
+};
 
 export const MOCK_POSTS: Post[] = [
   {
@@ -49,7 +60,7 @@ export const MOCK_POSTS: Post[] = [
   },
   {
     id: "p3",
-    user: CURRENT_USER,
+    user: MOCK_CURRENT_AUTHOR,
     content:
       "아침 일찍 일어나 말씀을 보니 하루가 다릅니다! 사망의 음침한 골짜기 같았던 어제였지만, 오늘은 주님의 지팡이가 느껴집니다.",
     scriptureRef: "시편 23:4",
@@ -65,7 +76,7 @@ export const MOCK_POSTS: Post[] = [
 export const MOCK_MY_POSTS: Post[] = [
   {
     id: "my1",
-    user: CURRENT_USER,
+    user: MOCK_CURRENT_AUTHOR,
     content:
       "아침 일찍 일어나 말씀을 보니 하루가 다릅니다! 사망의 음침한 골짜기 같았던 어제였지만, 오늘은 주님의 지팡이가 느껴집니다.",
     scriptureRef: "시편 23:4",
@@ -77,7 +88,7 @@ export const MOCK_MY_POSTS: Post[] = [
   },
   {
     id: "my2",
-    user: CURRENT_USER,
+    user: MOCK_CURRENT_AUTHOR,
     content:
       "하나님이 세상을 이처럼 사랑하사... 오늘 나도 그 사랑 안에 머물기를. 주변 사람들에게 작은 사랑을 나누는 하루가 되길.",
     scriptureRef: "요한복음 3:16",
@@ -90,7 +101,7 @@ export const MOCK_MY_POSTS: Post[] = [
   },
   {
     id: "my3",
-    user: CURRENT_USER,
+    user: MOCK_CURRENT_AUTHOR,
     content:
       "여호와는 나의 목자시니 부족함이 없으리로다. 오늘 하루도 주님 인도하심을 믿고 걸었습니다.",
     scriptureRef: "시편 23:1",
@@ -102,7 +113,7 @@ export const MOCK_MY_POSTS: Post[] = [
   },
   {
     id: "my4",
-    user: CURRENT_USER,
+    user: MOCK_CURRENT_AUTHOR,
     content:
       "내게 능력 주시는 자 안에서 내가 모든 것을 할 수 있느니라. 어제보다 한 걸음 더 내딛는 하루.",
     scriptureRef: "빌립보 4:13",
@@ -114,7 +125,7 @@ export const MOCK_MY_POSTS: Post[] = [
   },
   {
     id: "my5",
-    user: CURRENT_USER,
+    user: MOCK_CURRENT_AUTHOR,
     content:
       "마음을 다하여 여호와를 신뢰하고... 오늘도 주님 뜻을 먼저 구하는 하루가 되길.",
     scriptureRef: "잠언 3:5-6",

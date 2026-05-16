@@ -10,7 +10,7 @@ export {
   type ProfileRow,
   type UpdateProfileInput,
 } from "./api/userService";
-export type { User, OqUser, Badge } from "./model/types";
+export type { User, OqUserRow, Badge } from "./model/types";
 export { CURRENT_USER, BADGES } from "./model/mocks";
 export { ENNEAGRAM_MAP } from "./model/enneagram-map";
 export { profileSchema, type ProfileFormData } from "./model/profile-schema";

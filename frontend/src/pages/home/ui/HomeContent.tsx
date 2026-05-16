@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { DailyWordCard } from "@entities/daily-word";
 import { FeedFilter, usePosts } from "@entities/post";
-import { FeedItem } from "@widgets/feed-item";
+import { FeedItem } from "@features/feed-item";
 import { MobileHeader } from "@widgets/mobile-header";
 
 // ─── Animation Variants ────────────────────────────────────────────────────

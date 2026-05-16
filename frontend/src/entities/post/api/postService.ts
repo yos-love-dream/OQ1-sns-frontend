@@ -1,14 +1,17 @@
 import { createClient } from "@shared/api/supabase/client";
+import { assertOk, unwrap } from "@shared/api/supabase/unwrap";
 import { parseDate } from "@shared/lib/utils";
+import { z } from "zod";
 import type { Post } from "../model/types";
 import { fetchActiveUserIdsToday } from "./activity";
 import { fetchUserStatsMap } from "../lib/fetchUserStatsMap";
 import { mapQtAnswerToPost, mapUserPostToPost } from "../lib/mapToPost";
-import type {
-  DBReactionRow,
-  QtAnswerRow,
-  UserPostRow,
-} from "../model/types";
+import {
+  DBReactionRowSchema,
+  QtAnswerRowSchema,
+  UserPostRowSchema,
+  type DBReactionRow,
+} from "./schemas";
 
 const REACTION_LIMIT = 3;
 
@@ -17,10 +20,11 @@ export async function fetchPosts(
 ): Promise<Post[]> {
   const supabase = createClient();
 
-  const { data, error } = await supabase
-    .from("oq_user_qt_answers")
-    .select(
-      `
+  const rows = await unwrap(
+    supabase
+      .from("oq_user_qt_answers")
+      .select(
+        `
       id, meditation, created_at, is_public, user_id,
       user:oq_users!user_id ( id, user_name, guk_no, avatar_url, enneagram_type ),
       daily_qt:oq_daily_qt ( bible_book, chapter, verse_from, verse_to, content ),
@@ -28,24 +32,24 @@ export async function fetchPosts(
       comments:oq_qt_comments(count),
       liked_by_me:oq_qt_likes(user_id)
     `,
-    )
-    .eq("is_public", true)
-    .or("is_hidden.is.null,is_hidden.eq.false")
-    .order("created_at", { ascending: false });
+      )
+      .eq("is_public", true)
+      .or("is_hidden.is.null,is_hidden.eq.false")
+      .order("created_at", { ascending: false }),
+    z.array(QtAnswerRowSchema),
+  );
 
-  if (error || !data) {
-    if (error) console.error("Error fetching posts:", error);
-    return [];
-  }
-
-  const rows = data as unknown as QtAnswerRow[];
   const userIds = [...new Set(rows.map((r) => r.user_id))];
   const [activeUserIds, badgesMap] = await Promise.all([
     fetchActiveUserIdsToday(),
     fetchUserStatsMap(userIds),
   ]);
   return rows.map((row) =>
-    mapQtAnswerToPost(row, { activeUserIds, currentUserId, badgesMap }),
+    mapQtAnswerToPost(row, {
+      activeUserIds,
+      currentUserId,
+      badgesMap,
+    }),
   );
 }
 
@@ -72,18 +76,16 @@ export async function fetchUserPosts(
     query = query.eq("is_public", true);
   }
 
-  const { data, error } = await query.order("created_at", { ascending: false });
-
-  if (error || !data) {
-    if (error) console.error("Error fetching user posts:", error);
-    return [];
-  }
+  const rows = await unwrap(
+    query.order("created_at", { ascending: false }),
+    z.array(UserPostRowSchema),
+  );
 
   const [activeUserIds, badgesMap] = await Promise.all([
     fetchActiveUserIdsToday([userId]),
     fetchUserStatsMap([userId]),
   ]);
-  return (data as unknown as UserPostRow[]).map((row) =>
+  return rows.map((row) =>
     mapUserPostToPost(row, {
       activeUserIds,
       currentUserId: userId,
@@ -94,10 +96,11 @@ export async function fetchUserPosts(
 
 export async function likePost(postId: string, userId: string): Promise<void> {
   const supabase = createClient();
-  const { error } = await supabase
-    .from("oq_qt_likes")
-    .insert({ user_id: userId, answer_id: postId });
-  if (error) throw error;
+  await assertOk(
+    supabase
+      .from("oq_qt_likes")
+      .insert({ user_id: userId, answer_id: postId }),
+  );
 }
 
 export async function unlikePost(
@@ -105,12 +108,13 @@ export async function unlikePost(
   userId: string,
 ): Promise<void> {
   const supabase = createClient();
-  const { error } = await supabase
-    .from("oq_qt_likes")
-    .delete()
-    .eq("user_id", userId)
-    .eq("answer_id", postId);
-  if (error) throw error;
+  await assertOk(
+    supabase
+      .from("oq_qt_likes")
+      .delete()
+      .eq("user_id", userId)
+      .eq("answer_id", postId),
+  );
 }
 
 export async function deletePost(
@@ -118,33 +122,34 @@ export async function deletePost(
   userId: string,
 ): Promise<void> {
   const supabase = createClient();
-  const { error } = await supabase
-    .from("oq_user_qt_answers")
-    .delete()
-    .eq("id", postId)
-    .eq("user_id", userId);
-  if (error) throw error;
+  await assertOk(
+    supabase
+      .from("oq_user_qt_answers")
+      .delete()
+      .eq("id", postId)
+      .eq("user_id", userId),
+  );
 }
 
 export async function reportPost(postId: string): Promise<void> {
   const supabase = createClient();
-  const { error } = await supabase.rpc("report_answer", { answer_id: postId });
-  if (error) throw error;
+  await assertOk(supabase.rpc("report_answer", { answer_id: postId }));
 }
 
 export async function fetchRecentReactions(userId: string, postIds: string[]) {
   const supabase = createClient();
 
-  const fetchReactions = async (table: string): Promise<DBReactionRow[]> => {
-    const { data } = await supabase
-      .from(table)
-      .select("id, created_at, user:oq_users!inner(user_name)")
-      .in("answer_id", postIds)
-      .neq("user_id", userId)
-      .order("created_at", { ascending: false })
-      .limit(REACTION_LIMIT);
-    return (data as unknown as DBReactionRow[]) || [];
-  };
+  const fetchReactions = (table: string): Promise<DBReactionRow[]> =>
+    unwrap(
+      supabase
+        .from(table)
+        .select("id, created_at, user:oq_users!inner(user_name)")
+        .in("answer_id", postIds)
+        .neq("user_id", userId)
+        .order("created_at", { ascending: false })
+        .limit(REACTION_LIMIT),
+      z.array(DBReactionRowSchema),
+    );
 
   const mapReaction = (row: DBReactionRow, type: "like" | "comment") => ({
     id: row.id,
@@ -168,4 +173,3 @@ export async function fetchRecentReactions(userId: string, postIds: string[]) {
     )
     .slice(0, REACTION_LIMIT);
 }
-

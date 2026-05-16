@@ -1,7 +1,7 @@
 "use client";
 
 import { DailyWordCard } from "@entities/daily-word";
-import { FeedItem } from "@widgets/feed-item";
+import { FeedItem } from "@features/feed-item";
 import { MOCK_POSTS } from "@entities/post";
 import { TODAY_WORD } from "@entities/daily-word";
 import { FeedFilter } from "@entities/post";

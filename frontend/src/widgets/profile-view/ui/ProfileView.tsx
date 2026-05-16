@@ -3,7 +3,7 @@
 import { ActivityCalendar } from "@entities/activity";
 import { useRecentReactions, useUserPosts } from "@entities/post";
 import { useUserProfile } from "@entities/user";
-import { FeedItem } from "@widgets/feed-item";
+import { FeedItem } from "@features/feed-item";
 import { fadeRise } from "@shared/lib/animations";
 import { isFeatureEnabled } from "@shared/lib/utils";
 import { motion } from "framer-motion";
@@ -58,7 +58,7 @@ export default function ProfileView({
 
   const { activityDates, hasDoneToday, stats, posts } = useProfileStats(
     rawPosts,
-    profile,
+    profile ?? undefined,
   );
 
   const postIds = useMemo(() => posts.map((p) => p.id), [posts]);

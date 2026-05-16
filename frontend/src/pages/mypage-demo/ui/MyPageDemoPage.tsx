@@ -1,8 +1,8 @@
 "use client";
 
-import { useConfirm } from "@app/providers/ConfirmProvider";
+import { useConfirm } from "@shared/lib/confirm";
 import { ActivityCalendar } from "@entities/activity";
-import { FeedItem } from "@widgets/feed-item";
+import { FeedItem } from "@features/feed-item";
 import { UserAvatar } from "@entities/user";
 import { BADGES, CURRENT_USER } from "@entities/user";
 import { MOCK_MY_POSTS } from "@entities/post";

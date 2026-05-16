@@ -1,6 +1,6 @@
 "use client";
 
-import { useAlert } from "@app/providers/AlertProvider";
+import { useAlert } from "@shared/lib/alert";
 import { signInWithOAuth } from "@shared/api/supabase/auth-client";
 import { useCallback } from "react";
 

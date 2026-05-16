@@ -1,6 +1,20 @@
 import { redirect } from "next/navigation";
 import { cache } from "react";
+import { z } from "zod";
 import { createClient } from "./server";
+import { unwrapOrNull } from "./unwrap";
+
+const OqUserRowSchema = z.object({
+  id: z.string(),
+  user_name: z.string(),
+  guk_no: z.number(),
+  birth_date: z.string().nullable(),
+  enneagram_type: z.string().nullable(),
+  avatar_url: z.string().nullable(),
+  deleted_at: z.string().nullable().optional(),
+  created_at: z.string().optional(),
+  updated_at: z.string().optional(),
+});
 
 /**
  * 서버 컴포넌트에서 현재 유저를 가져옵니다.
@@ -20,18 +34,12 @@ export const getUser = cache(async () => {
  */
 export const getProfile = cache(async (userId: string) => {
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("oq_users")
-    .select("*")
-    .eq("id", userId)
-    .single();
-
-  if (error || !data) return null;
-
-  return {
-    ...data,
-    avatar_url: data.avatar_url || "",
-  };
+  const data = await unwrapOrNull(
+    supabase.from("oq_users").select("*").eq("id", userId).single(),
+    OqUserRowSchema,
+  );
+  if (!data) return null;
+  return { ...data, avatar_url: data.avatar_url || "" };
 });
 
 function isProfileComplete(

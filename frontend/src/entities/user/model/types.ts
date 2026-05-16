@@ -1,12 +1,14 @@
-/** ERD oq_users 테이블 기준 회원가입/회원 정보 */
-export interface OqUser {
-  id?: number;
+/** Supabase oq_users 테이블 row (select * 결과). avatar_url은 호출 측에서 빈 문자열로 보정될 수 있음. */
+export interface OqUserRow {
+  id: string;
   user_name: string;
   guk_no: number;
-  birth_date: string; // YYYY-MM-DD
-  enneagram_type: string;
-  reg_date?: string;
-  update_date?: string;
+  birth_date: string | null;
+  enneagram_type: string | null;
+  avatar_url: string;
+  deleted_at?: string | null;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface User {
