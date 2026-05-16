@@ -1,8 +1,8 @@
 "use client";
 
-import { MobileHeader } from "@/app/components/MobileHeader";
-import ProfileView from "@/app/components/ProfileView";
-import { createClient } from "@/lib/supabase/client";
+import { MobileHeader } from "@widgets/navigation";
+import { ProfileView } from "@widgets/profile-view";
+import { createClient } from "@shared/api/supabase/client";
 import { ChevronLeft } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -11,7 +11,7 @@ export default function UserProfilePage() {
   const params = useParams();
   const router = useRouter();
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
-  const targetUserId = params.id as string;
+  const targetUserId = (params?.id ?? "") as string;
 
   useEffect(() => {
     const checkUser = async () => {

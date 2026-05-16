@@ -1,4 +1,4 @@
-import { updateSession } from "@/lib/supabase/middleware";
+import { updateSession } from "@shared/api/supabase/middleware";
 import { NextResponse, type NextRequest } from "next/server";
 
 const PUBLIC_PATHS = [

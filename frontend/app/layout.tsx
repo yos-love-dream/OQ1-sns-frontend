@@ -2,9 +2,9 @@ import { Agentation } from "agentation";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
-import LayoutShell from "./components/LayoutShell";
-import { SerwistProvider } from "./serwist";
-import "./globals.css";
+import { LayoutShell } from "@widgets/app-shell";
+import { SerwistProvider } from "@app/providers/SerwistProvider";
+import "@app/styles/globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

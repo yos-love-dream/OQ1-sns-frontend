@@ -4,7 +4,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@shared/ui/popover";
 import {
   Award,
   Calendar,
@@ -15,12 +15,12 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import ActivityCalendar from "../../components/ActivityCalendar";
-import { useConfirm } from "../../components/ConfirmProvider";
-import FeedItem from "../../components/FeedItem";
-import { MobileHeader } from "../../components/MobileHeader";
-import UserAvatar from "../../components/UserAvatar";
-import { BADGES, CURRENT_USER, MOCK_MY_POSTS } from "../../constants";
+import { ActivityCalendar } from "@entities/activity";
+import { useConfirm } from "@app/providers/ConfirmProvider";
+import { FeedItem } from "@entities/post";
+import { MobileHeader } from "@widgets/navigation";
+import { UserAvatar } from "@entities/user";
+import { BADGES, CURRENT_USER, MOCK_MY_POSTS } from "@shared/lib/mock-data";
 
 function ProfileMenu() {
   const router = useRouter();

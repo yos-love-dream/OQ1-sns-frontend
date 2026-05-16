@@ -1,6 +1,6 @@
-import { requireAuth } from "@/lib/supabase/auth";
+import { requireAuth } from "@shared/api/supabase/auth";
 import type { Metadata } from "next";
-import DeleteContent from "./DeleteContent";
+import { DeleteContent } from "@features/delete-account";
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },

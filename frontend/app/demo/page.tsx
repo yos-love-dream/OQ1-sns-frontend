@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import DailyWordCard from "../components/DailyWordCard";
-import FeedItem from "../components/FeedItem";
-import { MobileHeader } from "../components/MobileHeader";
-import { MOCK_POSTS, TODAY_WORD } from "../constants";
-import { FeedFilter } from "../types";
+import { DailyWordCard } from "@entities/daily-word";
+import { FeedItem } from "@entities/post";
+import { MobileHeader } from "@widgets/navigation";
+import { MOCK_POSTS, TODAY_WORD } from "@shared/lib/mock-data";
+import { FeedFilter } from "@shared/types";
 
 export default function HomePage() {
   const [filter, setFilter] = useState<FeedFilter>(FeedFilter.ALL);
