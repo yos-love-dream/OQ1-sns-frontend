@@ -6,13 +6,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@shared/ui/dialog";
-import { getNow } from "@shared/lib/utils";
-import { differenceInCalendarDays, format, parseISO } from "date-fns";
-import { ko } from "date-fns/locale";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { EVENT_CHALLENGE } from "@shared/config/event";
+import {
+  APP_EVENTS,
+  formatDDayLabel,
+  formatEventPeriod,
+  getEventStatus,
+  selectCurrentEvent,
+  type AppEvent,
+} from "@entities/event";
 
 interface MobileHeaderProps {
   rightContent?: React.ReactNode;
@@ -20,20 +24,62 @@ interface MobileHeaderProps {
   showLogo?: boolean;
 }
 
-function getEventDDay(startDate: string, endDate: string) {
-  const now = getNow();
-  const start = parseISO(startDate);
-  const end = parseISO(endDate);
-  const daysToStart = differenceInCalendarDays(start, now);
-  const daysToEnd = differenceInCalendarDays(end, now);
-
-  if (daysToStart > 0) return `D-${daysToStart}`;
-  if (daysToEnd >= 0) return "진행중";
-  return `D+${Math.abs(daysToEnd)}`;
+function EventChip({
+  event,
+  onClick,
+}: {
+  event: AppEvent;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="text-xs font-bold bg-gray-100 px-2 py-1 rounded-md text-gray-600"
+      suppressHydrationWarning
+    >
+      {formatDDayLabel(getEventStatus(event))}
+    </button>
+  );
 }
 
-function formatEventDate(dateStr: string) {
-  return format(parseISO(dateStr), "yyyy.MM.dd(E)", { locale: ko });
+function EventDialog({
+  event,
+  open,
+  onOpenChange,
+}: {
+  event: AppEvent;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  const dDayLabel = formatDDayLabel(getEventStatus(event));
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-[300px] p-0 overflow-hidden gap-0 border-0">
+        <DialogHeader className="sr-only">
+          <DialogTitle>Upcoming Event</DialogTitle>
+        </DialogHeader>
+        <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-6 text-white">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/50">
+            Upcoming Event
+          </p>
+          <p className="text-[15px] font-bold mt-2 leading-snug">
+            {event.name}
+          </p>
+        </div>
+        <div className="px-6 py-5 flex items-end justify-between bg-white">
+          <div>
+            <span className="text-3xl font-black tracking-tight text-gray-900">
+              {dDayLabel}
+            </span>
+            <p className="text-[11px] text-gray-400 mt-1">
+              {formatEventPeriod(event)}
+            </p>
+          </div>
+          <span className="text-xs font-medium text-gray-400">함께해요!</span>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
 }
 
 export function MobileHeader({
@@ -52,10 +98,7 @@ export function MobileHeader({
     }
   };
 
-  const dDayLabel = getEventDDay(
-    EVENT_CHALLENGE.startDate,
-    EVENT_CHALLENGE.endDate,
-  );
+  const currentEvent = selectCurrentEvent(APP_EVENTS);
 
   return (
     <>
@@ -71,45 +114,23 @@ export function MobileHeader({
           )}
         </div>
         <div className="flex items-center gap-4">
-          {rightContent || (
-            <button
-              onClick={() => setShowEvent(true)}
-              className="text-xs font-bold bg-gray-100 px-2 py-1 rounded-md text-gray-600"
-              suppressHydrationWarning
-            >
-              {dDayLabel}
-            </button>
-          )}
+          {rightContent ??
+            (currentEvent && (
+              <EventChip
+                event={currentEvent}
+                onClick={() => setShowEvent(true)}
+              />
+            ))}
         </div>
       </div>
 
-      <Dialog open={showEvent} onOpenChange={setShowEvent}>
-        <DialogContent className="max-w-[300px] p-0 overflow-hidden gap-0 border-0">
-          <DialogHeader className="sr-only">
-            <DialogTitle>Upcoming Event</DialogTitle>
-          </DialogHeader>
-          <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-6 text-white">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/50">
-              Upcoming Event
-            </p>
-            <p className="text-[15px] font-bold mt-2 leading-snug">
-              {EVENT_CHALLENGE.name}
-            </p>
-          </div>
-          <div className="px-6 py-5 flex items-end justify-between bg-white">
-            <div>
-              <span className="text-3xl font-black tracking-tight text-gray-900">
-                {dDayLabel}
-              </span>
-              <p className="text-[11px] text-gray-400 mt-1">
-                {formatEventDate(EVENT_CHALLENGE.startDate)} ~{" "}
-                {formatEventDate(EVENT_CHALLENGE.endDate)}
-              </p>
-            </div>
-            <span className="text-xs font-medium text-gray-400">함께해요!</span>
-          </div>
-        </DialogContent>
-      </Dialog>
+      {currentEvent && (
+        <EventDialog
+          event={currentEvent}
+          open={showEvent}
+          onOpenChange={setShowEvent}
+        />
+      )}
     </>
   );
 }
