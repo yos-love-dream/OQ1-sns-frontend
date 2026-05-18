@@ -63,6 +63,8 @@ export const UserPostRowSchema = z.object({
 
 export const DBReactionRowSchema = z.object({
   id: z.string(),
+  answer_id: z.string(),
+  content: z.string(),
   created_at: z.string(),
   user: z
     .object({ user_name: z.string(), avatar_url: z.string().nullable().optional() })

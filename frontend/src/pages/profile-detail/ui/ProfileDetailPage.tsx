@@ -1,29 +1,20 @@
 "use client";
 
-import { getCurrentUser } from "@shared/api/supabase/auth-client";
 import { MobileHeader } from "@widgets/mobile-header";
 import { ProfileView } from "@widgets/profile-view";
 import { ChevronLeft } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-export function ProfileDetailPage() {
-  const params = useParams();
+interface ProfileDetailPageProps {
+  targetUserId: string;
+  currentUserId: string | null;
+}
+
+export function ProfileDetailPage({
+  targetUserId,
+  currentUserId,
+}: ProfileDetailPageProps) {
   const router = useRouter();
-  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
-  const targetUserId = (params?.id ?? "") as string;
-
-  useEffect(() => {
-    const checkUser = async () => {
-      const user = await getCurrentUser();
-      if (!user) return;
-      setCurrentUserId(user.id);
-      if (user.id === targetUserId) {
-        router.replace("/mypage");
-      }
-    };
-    checkUser();
-  }, [targetUserId, router]);
 
   return (
     <div className="pb-20 md:py-8">

@@ -8,7 +8,7 @@ import { formatRelativeTime } from "@shared/lib/utils";
 import { Heart, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { likePost, unlikePost, type Post } from "@entities/post";
 import { useAlert } from "@shared/lib/alert";
 import { UserAvatar } from "@entities/user";
@@ -65,6 +65,19 @@ const FeedItem: React.FC<FeedItemProps> = ({ post, currentUserId }) => {
   const [showScripture, setShowScripture] = useState(false);
   const showAlert = useAlert();
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.location.hash === `#post-${post.id}-comments`) {
+      setShowComments(true);
+    }
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<{ postId: string }>).detail;
+      if (detail?.postId === post.id) setShowComments(true);
+    };
+    window.addEventListener("oq:open-comments", handler);
+    return () => window.removeEventListener("oq:open-comments", handler);
+  }, [post.id]);
+
   const handleLike = async () => {
     if (!currentUserId) {
       showAlert("로그인이 필요합니다.");
@@ -92,7 +105,10 @@ const FeedItem: React.FC<FeedItemProps> = ({ post, currentUserId }) => {
   if (isDeleted) return null;
 
   return (
-    <div className="bg-white border-b border-gray-200 md:border md:rounded-xl">
+    <div
+      id={`post-${post.id}`}
+      className="bg-white border-b border-gray-200 md:border md:rounded-xl scroll-mt-20"
+    >
       <FeedItemHeader
         post={post}
         currentUserId={currentUserId}

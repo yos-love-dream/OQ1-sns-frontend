@@ -3,23 +3,27 @@
 import { fadeRise } from "@shared/lib/animations";
 import { formatRelativeTime } from "@shared/lib/utils";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 interface Reaction {
   id: string;
   type: "like" | "comment" | string;
+  post_id: string;
+  content: string | null;
   user_name: string;
   created_at: string;
 }
 
 interface ReactionsCardProps {
   reactions: Reaction[];
+  postExcerpts: Record<string, string>;
 }
 
-export function ReactionsCard({ reactions }: ReactionsCardProps) {
+export function ReactionsCard({ reactions, postExcerpts }: ReactionsCardProps) {
   return (
     <motion.div
       {...fadeRise(0.2)}
-      className="bg-linear-to-br from-purple-600 via-pink-600 to-orange-500 p-6 rounded-lg shadow-md text-white relative overflow-hidden"
+      className="bg-linear-to-br from-purple-600 via-pink-600 to-orange-500 p-5 rounded-lg shadow-md text-white relative overflow-hidden"
     >
       <div className="relative z-10">
         <h3 className="text-lg font-bold mb-1">공동체의 응원</h3>
@@ -29,7 +33,11 @@ export function ReactionsCard({ reactions }: ReactionsCardProps) {
 
         {reactions.length > 0 ? (
           reactions.map((reaction) => (
-            <ReactionRow key={reaction.id} reaction={reaction} />
+            <ReactionRow
+              key={reaction.id}
+              reaction={reaction}
+              excerpt={postExcerpts[reaction.post_id]}
+            />
           ))
         ) : (
           <ReactionEmpty />
@@ -39,25 +47,60 @@ export function ReactionsCard({ reactions }: ReactionsCardProps) {
   );
 }
 
-function ReactionRow({ reaction }: { reaction: Reaction }) {
+function ReactionRow({
+  reaction,
+  excerpt,
+}: {
+  reaction: Reaction;
+  excerpt: string | undefined;
+}) {
   const isLike = reaction.type === "like";
   const icon = isLike ? "🙏" : "💬";
-  const text = isLike
-    ? `${reaction.user_name}님이 '아멘'을 보냈어요.`
-    : `${reaction.user_name}님이 댓글을 남겼어요.`;
+  const hash = `#post-${reaction.post_id}${isLike ? "" : "-comments"}`;
+  const postLabel = excerpt && excerpt.length > 0 ? excerpt : "내 묵상";
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const el = document.getElementById(`post-${reaction.post_id}`);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    history.replaceState(null, "", hash);
+    if (!isLike) {
+      window.dispatchEvent(
+        new CustomEvent("oq:open-comments", {
+          detail: { postId: reaction.post_id },
+        }),
+      );
+    }
+  };
 
   return (
-    <div className="bg-white/10 backdrop-blur-md rounded-lg p-3 mb-2 last:mb-0 flex items-center gap-3 border border-white/10">
-      <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-sm shrink-0">
-        {icon}
-      </div>
-      <div className="leading-tight">
-        <p className="text-xs font-semibold">{text}</p>
-        <span className="text-xs opacity-70 mt-0.5 block">
+    <Link
+      href={hash}
+      scroll={false}
+      onClick={handleClick}
+      className="block bg-white/10 backdrop-blur-md rounded-lg px-3 py-2 mb-2 last:mb-0 border border-white/10 hover:bg-white/15 transition-colors leading-tight"
+    >
+      <div className="flex items-baseline gap-1.5 min-w-0">
+        <span className="text-xs shrink-0" aria-hidden>
+          {icon}
+        </span>
+        <span className="text-xs font-semibold truncate min-w-0">
+          {reaction.user_name}
+        </span>
+        <span className="text-[11px] text-white/70 shrink-0 ml-auto">
           {formatRelativeTime(reaction.created_at)}
         </span>
       </div>
-    </div>
+      {!isLike && reaction.content && (
+        <p className="text-xs text-white/90 mt-1 truncate">
+          “{reaction.content}”
+        </p>
+      )}
+      <p className="text-[11px] text-white/70 mt-0.5 truncate">
+        {postLabel}
+      </p>
+    </Link>
   );
 }
 

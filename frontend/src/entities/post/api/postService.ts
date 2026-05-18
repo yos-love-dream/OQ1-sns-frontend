@@ -60,8 +60,9 @@ export async function fetchPosts(
 export async function fetchUserPosts(
   userId: string,
   isOwnProfile: boolean,
+  client?: SupabaseClient,
 ): Promise<Post[]> {
-  const supabase = createClient();
+  const supabase = client ?? createClient();
 
   let query = supabase
     .from("oq_user_qt_answers")
@@ -86,8 +87,8 @@ export async function fetchUserPosts(
   );
 
   const [activeUserIds, badgesMap] = await Promise.all([
-    fetchActiveUserIdsToday([userId]),
-    fetchUserStatsMap([userId]),
+    fetchActiveUserIdsToday([userId], supabase),
+    fetchUserStatsMap([userId], supabase),
   ]);
   return rows.map((row) =>
     mapUserPostToPost(row, {
@@ -165,7 +166,9 @@ async function fetchRecentComments(
   return unwrap(
     supabase
       .from("oq_qt_comments")
-      .select("id, created_at, user:oq_users!inner(user_name)")
+      .select(
+        "id, answer_id, content, created_at, user:oq_users!inner(user_name)",
+      )
       .in("answer_id", postIds)
       .neq("user_id", userId)
       .order("created_at", { ascending: false })
@@ -187,12 +190,16 @@ export async function fetchRecentReactions(userId: string, postIds: string[]) {
     ...likes.map((l) => ({
       id: `${l.user_id}:${l.answer_id}`,
       type: "like" as const,
+      post_id: l.answer_id,
+      content: null as string | null,
       user_name: userName(l.user),
       created_at: l.created_at,
     })),
     ...comments.map((c) => ({
       id: c.id,
       type: "comment" as const,
+      post_id: c.answer_id,
+      content: c.content,
       user_name: userName(c.user),
       created_at: c.created_at,
     })),

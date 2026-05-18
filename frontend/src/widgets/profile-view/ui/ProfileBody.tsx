@@ -46,6 +46,16 @@ export function ProfileBody({
     isOwnProfile && posts.length > 0,
   );
 
+  const postExcerpts = useMemo(() => {
+    const map: Record<string, string> = {};
+    for (const p of posts) {
+      const firstLine = (p.content ?? "").split("\n")[0]?.trim() ?? "";
+      map[p.id] =
+        firstLine.length > 28 ? `${firstLine.slice(0, 28)}…` : firstLine;
+    }
+    return map;
+  }, [posts]);
+
   if (!profile) {
     return (
       <div className="py-20 text-center text-gray-500">
@@ -119,7 +129,10 @@ export function ProfileBody({
         <div className="space-y-6">
           {isOwnProfile && (
             <>
-              <ReactionsCard reactions={reactions} />
+              <ReactionsCard
+                reactions={reactions}
+                postExcerpts={postExcerpts}
+              />
               {isFeatureEnabled("photoUpload") && <YouthProgressCard />}
             </>
           )}
