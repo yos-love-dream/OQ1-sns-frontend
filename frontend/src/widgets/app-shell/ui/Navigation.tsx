@@ -16,10 +16,19 @@ export const BottomNav = () => {
   const pathname = usePathname();
   const isActive = (path: string) => pathname === path;
 
+  const handleSamePathScroll =
+    (href: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+      if (pathname === href) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 h-16 flex justify-around items-center z-50 md:hidden pb-safe">
       <Link
         href="/"
+        onClick={handleSamePathScroll("/")}
         className="flex flex-col items-center justify-center w-full h-full"
       >
         <Home
@@ -30,6 +39,7 @@ export const BottomNav = () => {
       </Link>
       <Link
         href="/upload"
+        onClick={handleSamePathScroll("/upload")}
         className="flex flex-col items-center justify-center w-full h-full"
       >
         <PlusSquare
@@ -40,6 +50,7 @@ export const BottomNav = () => {
       </Link>
       <Link
         href="/mypage"
+        onClick={handleSamePathScroll("/mypage")}
         className="flex flex-col items-center justify-center w-full h-full"
       >
         <User
