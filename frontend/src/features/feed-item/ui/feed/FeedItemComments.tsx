@@ -7,7 +7,7 @@ import {
 } from "@entities/post";
 import { formatRelativeTime, sanitizeText } from "@shared/lib/utils";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAlert } from "@shared/lib/alert";
 import { UserAvatar } from "@entities/user";
 
@@ -18,6 +18,7 @@ interface FeedItemCommentsProps {
 }
 
 const MAX_COMMENT_LENGTH = 1000;
+const MAX_TEXTAREA_HEIGHT = 96;
 
 export default function FeedItemComments({
   postId,
@@ -27,7 +28,20 @@ export default function FeedItemComments({
   const [comments, setComments] = useState<PostCommentRow[]>([]);
   const [commentText, setCommentText] = useState("");
   const [loading, setLoading] = useState(true);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const showAlert = useAlert();
+
+  const resizeTextarea = () => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, MAX_TEXTAREA_HEIGHT)}px`;
+  };
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCommentText(e.target.value);
+    resizeTextarea();
+  };
 
   // 최초 마운트 시 댓글 로드
   useEffect(() => {
@@ -63,6 +77,8 @@ export default function FeedItemComments({
       setComments((prev) => [...prev, created]);
       onCommentCountChange(1);
       setCommentText("");
+      const el = textareaRef.current;
+      if (el) el.style.height = "auto";
     } catch (error) {
       console.error(error);
       showAlert("댓글 작성 실패");
@@ -117,20 +133,25 @@ export default function FeedItemComments({
       {currentUserId && (
         <form
           onSubmit={handleSubmit}
-          className="flex items-center gap-2 pt-2 border-t border-gray-50"
+          className="flex items-end gap-2 pt-2"
         >
-          <input
-            type="text"
+          <textarea
+            ref={textareaRef}
+            rows={1}
             value={commentText}
-            onChange={(e) => setCommentText(e.target.value)}
+            onChange={handleTextChange}
             placeholder="댓글 달기..."
             maxLength={MAX_COMMENT_LENGTH}
-            className="flex-1 text-sm bg-transparent border-none p-0 focus:ring-0 placeholder:text-gray-400 outline-hidden"
+            className="flex-1 text-sm leading-5 bg-gray-50 rounded-md border border-gray-200 px-3 py-2 resize-none no-scrollbar focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 placeholder:text-gray-400 transition-[box-shadow,border-color,height] duration-150"
           />
           <button
             type="submit"
             disabled={!commentText.trim()}
-            className="text-sm text-blue-500 font-bold disabled:opacity-30 disabled:pointer-events-none transition-all"
+            className={`text-sm text-blue-500 font-bold pb-1.5 transition-opacity duration-150 ${
+              commentText.trim()
+                ? "opacity-100"
+                : "opacity-40 pointer-events-none"
+            }`}
           >
             게시
           </button>
