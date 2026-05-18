@@ -69,6 +69,16 @@ export const DBReactionRowSchema = z.object({
     .nullable(),
 });
 
+// oq_qt_likes는 (user_id, answer_id) 합성 PK라 id 컬럼이 없음
+export const DBLikeRowSchema = z.object({
+  user_id: z.string(),
+  answer_id: z.string(),
+  created_at: z.string(),
+  user: z
+    .object({ user_name: z.string(), avatar_url: z.string().nullable().optional() })
+    .nullable(),
+});
+
 export const PostCommentRowSchema = z.object({
   id: z.string(),
   content: z.string(),
@@ -93,3 +103,4 @@ export const UserIdRowSchema = z.object({ user_id: z.string() });
 export type QtAnswerRow = z.infer<typeof QtAnswerRowSchema>;
 export type UserPostRow = z.infer<typeof UserPostRowSchema>;
 export type DBReactionRow = z.infer<typeof DBReactionRowSchema>;
+export type DBLikeRow = z.infer<typeof DBLikeRowSchema>;

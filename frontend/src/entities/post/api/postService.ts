@@ -7,9 +7,11 @@ import { fetchActiveUserIdsToday } from "./activity";
 import { fetchUserStatsMap } from "../lib/fetchUserStatsMap";
 import { mapQtAnswerToPost, mapUserPostToPost } from "../lib/mapToPost";
 import {
+  DBLikeRowSchema,
   DBReactionRowSchema,
   QtAnswerRowSchema,
   UserPostRowSchema,
+  type DBLikeRow,
   type DBReactionRow,
 } from "./schemas";
 
@@ -136,36 +138,62 @@ export async function reportPost(postId: string): Promise<void> {
   await assertOk(supabase.rpc("report_answer", { answer_id: postId }));
 }
 
-export async function fetchRecentReactions(userId: string, postIds: string[]) {
+async function fetchRecentLikes(
+  userId: string,
+  postIds: string[],
+): Promise<DBLikeRow[]> {
   const supabase = createClient();
+  return unwrap(
+    supabase
+      .from("oq_qt_likes")
+      .select("user_id, answer_id, created_at, user:oq_users!inner(user_name)")
+      .in("answer_id", postIds)
+      .neq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(REACTION_LIMIT),
+    z.array(DBLikeRowSchema),
+  );
+}
 
-  const fetchReactions = (table: string): Promise<DBReactionRow[]> =>
-    unwrap(
-      supabase
-        .from(table)
-        .select("id, created_at, user:oq_users!inner(user_name)")
-        .in("answer_id", postIds)
-        .neq("user_id", userId)
-        .order("created_at", { ascending: false })
-        .limit(REACTION_LIMIT),
-      z.array(DBReactionRowSchema),
-    );
+async function fetchRecentComments(
+  userId: string,
+  postIds: string[],
+): Promise<DBReactionRow[]> {
+  const supabase = createClient();
+  return unwrap(
+    supabase
+      .from("oq_qt_comments")
+      .select("id, created_at, user:oq_users!inner(user_name)")
+      .in("answer_id", postIds)
+      .neq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(REACTION_LIMIT),
+    z.array(DBReactionRowSchema),
+  );
+}
 
-  const mapReaction = (row: DBReactionRow, type: "like" | "comment") => ({
-    id: row.id,
-    type,
-    user_name: row.user?.user_name || "알 수 없음",
-    created_at: row.created_at,
-  });
-
+export async function fetchRecentReactions(userId: string, postIds: string[]) {
   const [likes, comments] = await Promise.all([
-    fetchReactions("oq_qt_likes"),
-    fetchReactions("oq_qt_comments"),
+    fetchRecentLikes(userId, postIds),
+    fetchRecentComments(userId, postIds),
   ]);
 
+  const userName = (u: { user_name: string } | null | undefined) =>
+    u?.user_name || "알 수 없음";
+
   return [
-    ...likes.map((l) => mapReaction(l, "like")),
-    ...comments.map((c) => mapReaction(c, "comment")),
+    ...likes.map((l) => ({
+      id: `${l.user_id}:${l.answer_id}`,
+      type: "like" as const,
+      user_name: userName(l.user),
+      created_at: l.created_at,
+    })),
+    ...comments.map((c) => ({
+      id: c.id,
+      type: "comment" as const,
+      user_name: userName(c.user),
+      created_at: c.created_at,
+    })),
   ]
     .sort(
       (a, b) =>
