@@ -19,7 +19,7 @@ export default function StaticPageLayout({
           ← 뒤로
         </Link>
 
-        <div className="bg-white border border-gray-200 rounded-lg p-6 sm:p-8">
+        <div className="bg-white border border-gray-200 rounded-xl p-6 sm:p-8">
           <h1 className="text-xl font-bold text-gray-900 mb-1">{title}</h1>
           <p className="text-xs text-gray-400 mb-8">
             최종 수정일: {updatedAt}

@@ -85,7 +85,7 @@ const DailyWordCard = ({ demoData }: Props) => {
       : null;
 
   return (
-    <div className="bg-white md:rounded-lg border-b md:border border-gray-200 mb-6 overflow-hidden">
+    <div className="bg-white md:rounded-xl border-b md:border border-gray-200 mb-6 overflow-hidden">
       {/* Instagram Story-like Header */}
       <div className="bg-linear-to-r from-pink-500 via-red-500 to-yellow-500 px-5 py-4 flex justify-between items-center text-white">
         <div className="flex-1 min-w-0">
@@ -96,7 +96,7 @@ const DailyWordCard = ({ demoData }: Props) => {
             </>
           ) : (
             <>
-              <h2 className="text-xs font-semibold opacity-90 uppercase tracking-wider">
+              <h2 className="text-xs font-medium opacity-90">
                 {data.date}
               </h2>
               <h1 className="text-lg font-bold mt-0.5">{data.reference}</h1>
@@ -168,7 +168,7 @@ const DailyWordCard = ({ demoData }: Props) => {
             >
               <p
                 ref={contentRef}
-                className="text-gray-800 leading-relaxed whitespace-pre-line text-sm md:text-base font-light"
+                className="text-gray-700 leading-relaxed whitespace-pre-line text-sm md:text-base font-light"
               >
                 {data.content}
               </p>

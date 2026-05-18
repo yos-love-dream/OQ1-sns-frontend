@@ -56,7 +56,7 @@ function AlertDialogTitle({
   return (
     <AlertDialogPrimitive.Title
       ref={ref}
-      className={cn("text-[15px] font-semibold text-gray-900", className)}
+      className={cn("text-base font-semibold text-gray-900", className)}
       {...props}
     />
   );
@@ -70,7 +70,7 @@ function AlertDialogDescription({
   return (
     <AlertDialogPrimitive.Description
       ref={ref}
-      className={cn("text-[13px] text-gray-600", className)}
+      className={cn("text-sm text-gray-600", className)}
       {...props}
     />
   );
@@ -85,7 +85,7 @@ function AlertDialogAction({
     <AlertDialogPrimitive.Action
       ref={ref}
       className={cn(
-        "w-full py-3 text-[15px] font-semibold text-gray-900 active:bg-gray-100 transition-colors",
+        "w-full py-3 text-base font-semibold text-gray-900 active:bg-gray-100 transition-colors",
         className,
       )}
       {...props}
@@ -102,7 +102,7 @@ function AlertDialogCancel({
     <AlertDialogPrimitive.Cancel
       ref={ref}
       className={cn(
-        "py-3 text-[15px] text-gray-500 active:bg-gray-100 transition-colors",
+        "py-3 text-base text-gray-500 active:bg-gray-100 transition-colors",
         className,
       )}
       {...props}

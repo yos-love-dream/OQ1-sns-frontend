@@ -1,6 +1,6 @@
 import { Agentation } from "agentation";
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import { Toaster } from "sonner";
 import { LayoutShell } from "@widgets/app-shell";
@@ -12,11 +12,6 @@ import {
 import { AlertProvider } from "@shared/lib/alert";
 import { ConfirmProvider } from "@shared/lib/confirm";
 import "@app/styles/globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -69,7 +64,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${pretendard.variable} antialiased`}
+        className={`${geistMono.variable} ${pretendard.variable} antialiased`}
       >
         <SerwistProvider swUrl="/serwist/sw.js">
           <QueryProvider>

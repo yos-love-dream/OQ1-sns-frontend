@@ -59,10 +59,10 @@ function EventDialog({
           <DialogTitle>Upcoming Event</DialogTitle>
         </DialogHeader>
         <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-6 text-white">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/50">
+          <p className="text-xs font-medium text-white/60">
             Upcoming Event
           </p>
-          <p className="text-[15px] font-bold mt-2 leading-snug">
+          <p className="text-base font-bold mt-2 leading-snug">
             {event.name}
           </p>
         </div>
@@ -71,7 +71,7 @@ function EventDialog({
             <span className="text-3xl font-black tracking-tight text-gray-900">
               {dDayLabel}
             </span>
-            <p className="text-[11px] text-gray-400 mt-1">
+            <p className="text-xs text-gray-400 mt-1">
               {formatEventPeriod(event)}
             </p>
           </div>

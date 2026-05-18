@@ -123,13 +123,13 @@ export const Sidebar = () => {
       {currentEvent && dDayLabel && (
         <div className="mt-auto pt-6 border-t border-gray-100">
           <div className="bg-gray-50 rounded-xl p-4 border border-gray-200/80">
-            <p className="text-[11px] font-medium text-gray-400 uppercase tracking-wide">
+            <p className="text-xs font-medium text-gray-400">
               Upcoming Event
             </p>
             <p className="text-sm font-semibold text-gray-900 mt-1">
               {currentEvent.name}
             </p>
-            <p className="text-[11px] text-gray-400 mt-0.5">
+            <p className="text-xs text-gray-400 mt-0.5">
               {formatEventPeriod(currentEvent)}
             </p>
             <div className="mt-2 flex justify-between items-end">

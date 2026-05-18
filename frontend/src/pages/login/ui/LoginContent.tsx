@@ -83,7 +83,7 @@ function LoginContent() {
     <div className="min-h-screen bg-fafafa flex flex-col items-center justify-center px-4 py-12">
       <motion.div
         {...fadeRise(0)}
-        className="w-full max-w-[360px] bg-white border border-gray-200 rounded-lg p-8 mb-4"
+        className="w-full max-w-[360px] bg-white border border-gray-200 rounded-xl p-8 mb-4"
       >
         <h1 className="text-2xl font-bold italic font-serif tracking-tight text-center text-gray-900">
           OQ1

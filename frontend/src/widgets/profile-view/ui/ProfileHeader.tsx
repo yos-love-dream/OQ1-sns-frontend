@@ -38,7 +38,7 @@ export function ProfileHeader({
   return (
     <motion.div
       {...fadeRise(0)}
-      className="bg-white p-6 md:rounded-lg md:border border-gray-200 mb-6 relative"
+      className="bg-white p-6 md:rounded-xl md:border border-gray-200 md:shadow-sm mb-6 relative"
     >
       {children && (
         <div className="absolute top-4 right-4 hidden md:block z-20">

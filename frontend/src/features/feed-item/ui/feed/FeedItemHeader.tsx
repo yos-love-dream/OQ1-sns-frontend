@@ -71,19 +71,19 @@ export default function FeedItemHeader({
         <div className="flex flex-col">
           <div className="flex items-center gap-1">
             {post.isAnonymous ? (
-              <span className="font-bold text-[13px] text-gray-900">
+              <span className="font-bold text-sm text-gray-900">
                 {displayName}
               </span>
             ) : (
               <Link
                 href={`/profile/${post.user.id}`}
-                className="font-bold text-[13px] text-gray-900 hover:text-gray-600 cursor-pointer transition-colors"
+                className="font-bold text-sm text-gray-900 hover:text-gray-600 cursor-pointer transition-colors"
               >
                 {displayName}
               </Link>
             )}
             {!post.isAnonymous && post.user.group && (
-              <span className="text-gray-400 text-[10px] font-medium">
+              <span className="text-gray-400 text-xs font-medium">
                 • {post.user.group}
               </span>
             )}

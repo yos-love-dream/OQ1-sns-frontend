@@ -88,19 +88,19 @@ export default function FeedItemComments({
                 />
               </Link>
               <div className="flex-1 flex flex-col gap-1">
-                <div className="text-[13px] leading-snug">
+                <div className="text-sm leading-snug">
                   <Link
                     href={`/profile/${comment.user_id}`}
                     className="font-bold mr-2 text-gray-900 cursor-pointer hover:text-gray-600 transition-colors"
                   >
                     {comment.user?.user_name || "알 수 없음"}
                   </Link>
-                  <span className="text-gray-800 wrap-break-word">
+                  <span className="text-gray-700 wrap-break-word">
                     {comment.content}
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-[11px] text-gray-400 font-medium tracking-tight">
+                  <span className="text-xs text-gray-400 font-medium">
                     {formatRelativeTime(comment.created_at)}
                   </span>
                 </div>
@@ -108,7 +108,7 @@ export default function FeedItemComments({
             </div>
           ))
         ) : (
-          <p className="text-center text-[11px] text-gray-400 py-2 font-medium">
+          <p className="text-center text-xs text-gray-400 py-2 font-medium">
             첫 댓글을 남겨보세요.
           </p>
         )}
@@ -125,12 +125,12 @@ export default function FeedItemComments({
             onChange={(e) => setCommentText(e.target.value)}
             placeholder="댓글 달기..."
             maxLength={MAX_COMMENT_LENGTH}
-            className="flex-1 text-[13px] bg-transparent border-none p-0 focus:ring-0 placeholder:text-gray-400 outline-hidden"
+            className="flex-1 text-sm bg-transparent border-none p-0 focus:ring-0 placeholder:text-gray-400 outline-hidden"
           />
           <button
             type="submit"
             disabled={!commentText.trim()}
-            className="text-[13px] text-blue-500 font-bold disabled:opacity-30 disabled:pointer-events-none transition-all"
+            className="text-sm text-blue-500 font-bold disabled:opacity-30 disabled:pointer-events-none transition-all"
           >
             게시
           </button>

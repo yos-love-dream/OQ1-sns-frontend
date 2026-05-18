@@ -17,9 +17,9 @@ export function EnneagramHero({ typeValue }: EnneagramHeroProps) {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="w-full max-w-[360px] bg-white border border-gray-200 rounded-lg p-6 mb-4 text-center"
+      className="w-full max-w-[360px] bg-white border border-gray-200 rounded-xl p-6 mb-4 text-center"
     >
-      <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-3">
+      <p className="text-xs font-medium text-gray-400 mb-3">
         Your Type
       </p>
       <div className="relative w-24 h-24 mx-auto mb-4 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100">

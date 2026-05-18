@@ -49,7 +49,7 @@ export default function FeedItemContent({
           >
             <span
               ref={contentRef}
-              className="text-[13px] text-gray-900 whitespace-pre-wrap block"
+              className="text-sm text-gray-900 whitespace-pre-wrap block"
             >
               {content}
             </span>
@@ -82,7 +82,7 @@ export default function FeedItemContent({
           {tags.map((tag) => (
             <span
               key={tag}
-              className="text-[13px] text-[#00376b] cursor-pointer"
+              className="text-sm text-blue-600 cursor-pointer"
             >
               #{tag}
             </span>
@@ -93,7 +93,7 @@ export default function FeedItemContent({
       {/* Scripture Reference */}
       <div className="mb-1">
         <span
-          className="text-[12px] font-medium text-blue-600/80 cursor-pointer hover:underline"
+          className="text-xs font-medium text-blue-600 cursor-pointer hover:underline"
           onClick={onScriptureClick}
         >
           📖 {scriptureRef}
@@ -102,7 +102,7 @@ export default function FeedItemContent({
 
       {/* Post Timestamp */}
       <div className="mb-3 px-0.5">
-        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tight">
+        <p className="text-xs text-gray-400">
           {formatRelativeTime(timestamp)}
         </p>
       </div>

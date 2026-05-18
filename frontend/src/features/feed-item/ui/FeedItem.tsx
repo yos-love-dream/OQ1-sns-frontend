@@ -92,7 +92,7 @@ const FeedItem: React.FC<FeedItemProps> = ({ post, currentUserId }) => {
   if (isDeleted) return null;
 
   return (
-    <div className="bg-white border-b border-gray-200 md:border md:rounded-lg">
+    <div className="bg-white border-b border-gray-200 md:border md:rounded-xl">
       <FeedItemHeader
         post={post}
         currentUserId={currentUserId}
@@ -148,7 +148,7 @@ const FeedItem: React.FC<FeedItemProps> = ({ post, currentUserId }) => {
         <div className="mb-2">
           {count > 0 && (
             <button
-              className="text-[13px] font-bold text-gray-900 text-left"
+              className="text-sm font-bold text-gray-900 text-left"
               onClick={() => setShowLikers(true)}
             >
               {formatAmenText(
@@ -177,7 +177,7 @@ const FeedItem: React.FC<FeedItemProps> = ({ post, currentUserId }) => {
                   onClick={() => setShowLikers(false)}
                 >
                   <UserAvatar src={u.avatarUrl} alt={u.userName} size="sm" />
-                  <span className="text-[13px] font-semibold text-gray-900">
+                  <span className="text-sm font-semibold text-gray-900">
                     {u.userName}
                     {u.userId === currentUserId && (
                       <span className="text-gray-400 font-normal ml-1">
@@ -188,7 +188,7 @@ const FeedItem: React.FC<FeedItemProps> = ({ post, currentUserId }) => {
                 </Link>
               ))
             ) : (
-              <p className="text-center text-[13px] text-gray-400 py-4">
+              <p className="text-center text-sm text-gray-400 py-4">
                 아직 아무도 아멘하지 않았습니다.
               </p>
             )}
@@ -199,7 +199,7 @@ const FeedItem: React.FC<FeedItemProps> = ({ post, currentUserId }) => {
         <div className="flex items-center gap-2 mt-0.5">
           {commentCount > 0 && !showComments && (
             <button
-              className="text-[13px] text-gray-500 font-medium"
+              className="text-sm text-gray-500 font-medium"
               onClick={() => setShowComments(true)}
             >
               댓글 {commentCount}개 모두 보기
@@ -231,7 +231,7 @@ const FeedItem: React.FC<FeedItemProps> = ({ post, currentUserId }) => {
                 {post.scriptureRef}
               </h3>
               <div className="w-full bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-                <p className="text-gray-700 leading-relaxed whitespace-pre-wrap text-[13px] md:text-sm font-medium text-left">
+                <p className="text-gray-700 leading-relaxed whitespace-pre-wrap text-sm font-medium text-left">
                   {post.scriptureContent || "말씀 내용을 불러올 수 없습니다."}
                 </p>
               </div>

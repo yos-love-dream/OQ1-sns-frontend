@@ -76,7 +76,7 @@ export function ProfileBody({
 
           <motion.div
             {...fadeRise(0.25)}
-            className="bg-white p-5 rounded-lg border border-gray-200"
+            className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm"
           >
             <div className="flex items-center gap-2 mb-4">
               <Calendar className="text-gray-900" size={18} />
@@ -133,7 +133,7 @@ export function ProfileBody({
 
 function YouthProgressCard() {
   return (
-    <div className="bg-white p-5 rounded-lg border border-gray-200">
+    <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
       <div className="flex items-center gap-2 mb-4">
         <MessageSquare className="text-gray-900" size={18} />
         <h2 className="font-bold text-gray-900 text-sm">청년부 현황</h2>
@@ -159,7 +159,7 @@ function GukNoCard({ gukNo }: { gukNo: number }) {
   return (
     <motion.div
       {...fadeRise(0.3)}
-      className="bg-white p-5 rounded-lg border border-gray-200"
+      className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm"
     >
       <div className="flex items-center gap-2 mb-4">
         <MessageSquare className="text-gray-900" size={18} />

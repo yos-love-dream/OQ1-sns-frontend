@@ -20,7 +20,7 @@ export function BadgeSection({ badges }: BadgeSectionProps) {
   return (
     <motion.div
       {...fadeRise(0.15)}
-      className="bg-white p-5 rounded-lg border border-gray-200"
+      className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm"
     >
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
@@ -74,7 +74,7 @@ function BadgeTile({ badge, onClick }: { badge: Badge; onClick: () => void }) {
         {badge.icon}
       </div>
       <span
-        className={`text-[10px] font-medium text-center ${badge.acquired ? "text-gray-900" : "text-gray-400"}`}
+        className={`text-xs font-medium text-center ${badge.acquired ? "text-gray-900" : "text-gray-400"}`}
       >
         {badge.name}
       </span>
@@ -92,16 +92,16 @@ function BadgeDetailRow({ badge }: { badge: Badge }) {
       </div>
       <div className="flex-1">
         <h3 className="text-sm font-bold text-gray-900">{badge.name}</h3>
-        <p className="text-[12px] text-gray-500 mt-1 leading-snug">
+        <p className="text-xs text-gray-500 mt-1 leading-snug">
           {badge.description}
         </p>
         <div className="mt-2 flex items-center">
           {badge.acquired ? (
-            <span className="text-[10px] font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded">
+            <span className="text-xs font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded">
               획득 완료
             </span>
           ) : (
-            <span className="text-[10px] font-medium text-gray-400 bg-gray-200 px-2 py-0.5 rounded">
+            <span className="text-xs font-medium text-gray-400 bg-gray-200 px-2 py-0.5 rounded">
               미획득
             </span>
           )}

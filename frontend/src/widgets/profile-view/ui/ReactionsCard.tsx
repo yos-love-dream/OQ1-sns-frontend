@@ -53,7 +53,7 @@ function ReactionRow({ reaction }: { reaction: Reaction }) {
       </div>
       <div className="leading-tight">
         <p className="text-xs font-semibold">{text}</p>
-        <span className="text-[10px] opacity-70 mt-0.5 block">
+        <span className="text-xs opacity-70 mt-0.5 block">
           {formatRelativeTime(reaction.created_at)}
         </span>
       </div>
@@ -66,7 +66,7 @@ function ReactionEmpty() {
     <div className="bg-white/10 backdrop-blur-md rounded-lg p-4 flex flex-col items-center justify-center text-center border border-white/10">
       <span className="text-2xl mb-2">🌱</span>
       <p className="text-sm font-semibold">아직 받은 반응이 없습니다.</p>
-      <p className="text-[10px] text-white/80 mt-1">
+      <p className="text-xs text-white/80 mt-1">
         지체들과 말씀을 나누고 교제해 보세요!
       </p>
     </div>

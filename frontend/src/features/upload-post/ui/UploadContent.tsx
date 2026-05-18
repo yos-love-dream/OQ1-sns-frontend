@@ -271,7 +271,7 @@ function UploadFormBody({
                     {tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] rounded font-medium flex items-center gap-1 cursor-pointer"
+                        className="px-2 py-0.5 bg-blue-50 text-blue-600 text-xs rounded font-medium flex items-center gap-1 cursor-pointer"
                         onClick={() => removeTag(tag)}
                       >
                         #{tag} <X size={8} />

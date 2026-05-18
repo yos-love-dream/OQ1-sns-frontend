@@ -6,7 +6,7 @@ export function HomeFeedSkeleton() {
       {Array.from({ length: SKELETON_COUNT }).map((_, i) => (
         <div
           key={i}
-          className="bg-white border-b border-gray-200 md:border md:rounded-lg animate-pulse"
+          className="bg-white border-b border-gray-200 md:border md:rounded-xl animate-pulse"
         >
           <div className="p-3 flex items-center gap-3">
             <div className="w-8 h-8 bg-gray-100 rounded-full" />

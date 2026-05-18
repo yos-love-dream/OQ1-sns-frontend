@@ -247,7 +247,7 @@ const ActivityCalendar = ({
                 }}
               />
             </svg>
-            <span className="absolute text-xs font-bold text-gray-800 tabular-nums">
+            <span className="absolute text-xs font-bold text-gray-700 tabular-nums">
               {completionPercent}%
             </span>
           </div>

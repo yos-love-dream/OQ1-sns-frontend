@@ -66,7 +66,7 @@ function SignupContent({ isAuthenticated }: SignupContentProps) {
       {hasPresetType && <EnneagramHero typeValue={enneagramType} />}
       <motion.div
         {...fadeRise(hasPresetType ? 0.15 : 0)}
-        className="w-full max-w-[360px] bg-white border border-gray-200 rounded-lg p-8 mb-4"
+        className="w-full max-w-[360px] bg-white border border-gray-200 rounded-xl p-8 mb-4"
       >
         {!hasPresetType && <SignupBrandHeader />}
         <p className="text-sm text-gray-700 text-center bg-gray-50 rounded-md py-3 px-3 mb-6">
@@ -117,7 +117,7 @@ function UnauthenticatedSignup({
       {hasPresetType && <EnneagramHero typeValue={enneagramType} />}
       <motion.div
         {...fadeRise(hasPresetType ? 0.15 : 0)}
-        className="w-full max-w-[360px] bg-white border border-gray-200 rounded-lg p-8 mb-4"
+        className="w-full max-w-[360px] bg-white border border-gray-200 rounded-xl p-8 mb-4"
       >
         <h1 className="text-2xl font-bold italic font-serif tracking-tight text-center text-gray-900">
           OQ1

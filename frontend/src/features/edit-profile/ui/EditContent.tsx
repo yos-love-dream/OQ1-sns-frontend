@@ -103,7 +103,7 @@ export default function EditContent({ userId }: EditContentProps) {
     <div className="mt-2 md:mt-0 px-4 md:px-0 space-y-6 max-w-xl mx-auto">
       <motion.div
         {...fadeRise(0)}
-        className="bg-white p-5 rounded-lg border border-gray-200"
+        className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm"
       >
         <div className="flex items-center gap-5">
           <UserAvatar
@@ -122,7 +122,7 @@ export default function EditContent({ userId }: EditContentProps) {
 
       <motion.div
         {...fadeRise(0.1)}
-        className="bg-white p-5 rounded-lg border border-gray-200"
+        className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm"
       >
         <h2 className="font-bold text-gray-900 text-sm mb-4">기본 정보</h2>
         <form
@@ -265,7 +265,7 @@ export default function EditContent({ userId }: EditContentProps) {
 
       <motion.div
         {...fadeRise(0.2)}
-        className="bg-white p-5 rounded-lg border border-gray-200"
+        className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm"
       >
         <Link
           href="/mypage/delete"

@@ -10,7 +10,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-pretendard);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -24,7 +24,6 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-pretendard), -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Segoe UI", Arial, Helvetica, sans-serif;
 }
 
 /* Hide scrollbar for clean horizontal scrolling */

@@ -61,7 +61,7 @@ export function HomeFeed({ userId, enneagramType, filter }: HomeFeedProps) {
                 className="flex items-center gap-4 py-6 px-4 md:px-0"
               >
                 <div className="flex-1 h-px bg-gray-100" />
-                <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap">
+                <span className="text-xs font-medium text-gray-400 whitespace-nowrap">
                   {formatDate(post.timestamp, "yyyy년 M월 d일")}
                 </span>
                 <div className="flex-1 h-px bg-gray-100" />

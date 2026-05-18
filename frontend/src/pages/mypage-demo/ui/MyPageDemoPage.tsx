@@ -90,7 +90,7 @@ export function MyPageDemoPage() {
         }
       />
 
-      <div className="bg-white p-6 md:rounded-lg md:border border-gray-200 mb-6 relative mt-2 md:mt-0">
+      <div className="bg-white p-6 md:rounded-xl md:border border-gray-200 md:shadow-sm mb-6 relative mt-2 md:mt-0">
         <div className="absolute top-4 right-4 hidden md:block">
           <ProfileMenu />
         </div>
@@ -133,7 +133,7 @@ export function MyPageDemoPage() {
         </div>
 
         <div className="mt-6">
-          <div className="flex justify-between text-[10px] text-gray-400 mb-1 font-medium uppercase tracking-wide">
+          <div className="flex justify-between text-xs text-gray-400 mb-1 font-medium">
             <span>Level Progress</span>
             <span>
               {CURRENT_USER.currentExp} / {CURRENT_USER.maxExp} EXP
@@ -175,7 +175,7 @@ function StatColumn({ label, value }: { label: string; value: number }) {
 
 function BadgeCollectionPanel() {
   return (
-    <div className="bg-white p-5 rounded-lg border border-gray-200">
+    <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Award className="text-gray-900" size={18} />
@@ -194,7 +194,7 @@ function BadgeCollectionPanel() {
               {badge.icon}
             </div>
             <span
-              className={`text-[10px] font-medium text-center ${badge.acquired ? "text-gray-900" : "text-gray-400"}`}
+              className={`text-xs font-medium text-center ${badge.acquired ? "text-gray-900" : "text-gray-400"}`}
             >
               {badge.name}
             </span>
@@ -207,7 +207,7 @@ function BadgeCollectionPanel() {
 
 function ActivityPanel() {
   return (
-    <div className="bg-white p-5 rounded-lg border border-gray-200">
+    <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
       <div className="flex items-center gap-2 mb-4">
         <Calendar className="text-gray-900" size={18} />
         <h2 className="font-bold text-gray-900 text-sm">내 활동 기록</h2>
@@ -247,7 +247,7 @@ function CommunityReactionsCard() {
           </div>
           <div>
             <p className="text-xs font-semibold">{`이믿음님이 '아멘'을 보냈어요.`}</p>
-            <span className="text-[10px] opacity-70">10분 전</span>
+            <span className="text-xs opacity-70">10분 전</span>
           </div>
         </div>
         <div className="bg-white/10 backdrop-blur-md rounded-lg p-3 flex items-center gap-3 border border-white/10">
@@ -256,7 +256,7 @@ function CommunityReactionsCard() {
           </div>
           <div>
             <p className="text-xs font-semibold">박사랑님이 댓글을 남겼어요.</p>
-            <span className="text-[10px] opacity-70">1시간 전</span>
+            <span className="text-xs opacity-70">1시간 전</span>
           </div>
         </div>
       </div>
@@ -266,7 +266,7 @@ function CommunityReactionsCard() {
 
 function GroupProgressCard() {
   return (
-    <div className="bg-white p-5 rounded-lg border border-gray-200">
+    <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
       <div className="flex items-center gap-2 mb-4">
         <MessageSquare className="text-gray-900" size={18} />
         <h2 className="font-bold text-gray-900 text-sm">청년 1부 현황</h2>

@@ -66,7 +66,7 @@ export function ConfirmProvider({ children }: { children: React.ReactNode }) {
         <AlertDialogContent>
           <div className="px-5 pt-5 pb-4 text-center">
             <AlertDialogTitle className="sr-only">확인</AlertDialogTitle>
-            <AlertDialogDescription className="text-[13px] text-gray-800 leading-relaxed">
+            <AlertDialogDescription className="text-sm text-gray-700 leading-relaxed">
               {state.message}
             </AlertDialogDescription>
           </div>
