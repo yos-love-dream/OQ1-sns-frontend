@@ -1,6 +1,7 @@
 import { createClient } from "@shared/api/supabase/client";
 import { assertOk, unwrap } from "@shared/api/supabase/unwrap";
 import { parseDate } from "@shared/lib/utils";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import type { Post } from "../model/types";
 import { fetchActiveUserIdsToday } from "./activity";
@@ -19,8 +20,9 @@ const REACTION_LIMIT = 3;
 
 export async function fetchPosts(
   currentUserId: string | null,
+  client?: SupabaseClient,
 ): Promise<Post[]> {
-  const supabase = createClient();
+  const supabase = client ?? createClient();
 
   const rows = await unwrap(
     supabase
@@ -43,8 +45,8 @@ export async function fetchPosts(
 
   const userIds = [...new Set(rows.map((r) => r.user_id))];
   const [activeUserIds, badgesMap] = await Promise.all([
-    fetchActiveUserIdsToday(),
-    fetchUserStatsMap(userIds),
+    fetchActiveUserIdsToday(undefined, supabase),
+    fetchUserStatsMap(userIds, supabase),
   ]);
   return rows.map((row) =>
     mapQtAnswerToPost(row, {

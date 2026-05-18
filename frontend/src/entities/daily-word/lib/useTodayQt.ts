@@ -6,6 +6,6 @@ import { fetchTodayQt } from "../api/fetchTodayQt";
 export function useTodayQt() {
   return useQuery({
     queryKey: ["todayQt"],
-    queryFn: fetchTodayQt,
+    queryFn: () => fetchTodayQt(),
   });
 }

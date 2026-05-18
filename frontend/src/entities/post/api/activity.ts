@@ -1,6 +1,7 @@
 import { createClient } from "@shared/api/supabase/client";
 import { unwrap } from "@shared/api/supabase/unwrap";
 import { getStartOfToday } from "@shared/lib/utils";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import { UserActivityRowSchema, UserIdRowSchema } from "./schemas";
 
@@ -8,10 +9,11 @@ export type UserActivityRow = z.infer<typeof UserActivityRowSchema>;
 
 export async function fetchUserActivityRows(
   userIds: string[],
+  client?: SupabaseClient,
 ): Promise<UserActivityRow[]> {
   if (userIds.length === 0) return [];
 
-  const supabase = createClient();
+  const supabase = client ?? createClient();
   return unwrap(
     supabase
       .from("oq_user_qt_answers")
@@ -24,8 +26,9 @@ export async function fetchUserActivityRows(
 
 export async function fetchActiveUserIdsToday(
   userIds?: string[],
+  client?: SupabaseClient,
 ): Promise<Set<string>> {
-  const supabase = createClient();
+  const supabase = client ?? createClient();
   const startOfToday = getStartOfToday();
 
   let query = supabase

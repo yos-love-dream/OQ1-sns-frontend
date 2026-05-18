@@ -1,4 +1,5 @@
 import { parseDate } from "@shared/lib/utils";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { format } from "date-fns";
 import { fetchUserActivityRows, type UserActivityRow } from "../api/activity";
 import { computeUserBadges } from "./badge";
@@ -69,8 +70,9 @@ export function buildUserStatsMap(
 
 export async function fetchUserStatsMap(
   userIds: string[],
+  client?: SupabaseClient,
 ): Promise<Map<string, string[]>> {
   if (userIds.length === 0) return new Map();
-  const rows = await fetchUserActivityRows(userIds);
+  const rows = await fetchUserActivityRows(userIds, client);
   return buildUserStatsMap(rows);
 }

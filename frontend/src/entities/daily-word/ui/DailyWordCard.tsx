@@ -15,7 +15,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useCopyToClipboard } from "@shared/hooks/useCopyToClipboard";
 import { getDailyInsight } from "../api/aiInsight";
-import { fetchTodayQt } from "../api/fetchTodayQt";
+import { useTodayQt } from "../lib/useTodayQt";
 import type { DailyWord } from "../model/types";
 
 interface Props {
@@ -29,24 +29,12 @@ const DailyWordCard = ({ demoData }: Props) => {
   const [hasInteracted, setHasInteracted] = useState(false);
   const [insight, setInsight] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [qtLoading, setQtLoading] = useState(true);
   const { copied, copy } = useCopyToClipboard({
     successMessage: "말씀이 복사되었습니다",
   });
   const contentRef = useRef<HTMLParagraphElement>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [dailyQt, setDailyQt] = useState<any>(null);
-
-  useEffect(() => {
-    const initDailyWord = async () => {
-      const qtData = await fetchTodayQt();
-      if (qtData) {
-        setDailyQt(qtData);
-      }
-      setQtLoading(false);
-    };
-    initDailyWord();
-  }, []);
+  const { data: dailyQt, isPending } = useTodayQt();
+  const qtLoading = isPending;
 
   // 콘텐츠가 4줄(96px) 초과일 때만 더보기 표시
   useEffect(() => {
