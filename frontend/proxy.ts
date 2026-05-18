@@ -28,7 +28,8 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
+  // PWA 자원(manifest/serwist/sw.js)은 비로그인 상태에서도 받아야 설치 가능하므로 제외
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|manifest\\.webmanifest|serwist|sw\\.js|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
